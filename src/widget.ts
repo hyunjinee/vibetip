@@ -3,6 +3,12 @@ import { CSS } from './styles'
 import type { VibeTipInstance, VibeTipOptions } from './types'
 
 const DEFAULT_ACCENT = '#FFDD00'
+const REPO_URL = 'https://github.com/hyunjinee/vibetip'
+
+// 이모지 대신 inline SVG — OS별 렌더링 차이가 없고 currentColor로 accent에 자동 대응.
+// 열림 상태의 ✕ 전환은 CSS(.vt-fab::after)가 처리한다.
+const ICON_SPARK =
+  '<svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path fill="currentColor" d="M12 2l2.6 6.9L22 12l-7.4 3.1L12 22l-2.6-6.9L2 12l7.4-3.1z"/></svg>'
 
 function el<K extends keyof HTMLElementTagNameMap>(
   tag: K,
@@ -20,6 +26,17 @@ export function createWidget(options: VibeTipOptions): VibeTipInstance {
     throw new Error('[vibetip] options.links must contain at least one payment link')
   }
 
+  // mount가 주어지면 인라인 카드 모드, 아니면 플로팅 버튼 모드
+  const mountTarget = options.mount
+    ? typeof options.mount === 'string'
+      ? document.querySelector<HTMLElement>(options.mount)
+      : options.mount
+    : null
+  if (options.mount && !mountTarget) {
+    throw new Error(`[vibetip] mount target not found: ${String(options.mount)}`)
+  }
+  const inline = mountTarget != null
+
   const host = document.createElement('div')
   host.setAttribute('data-vibetip-widget', '')
   const shadow = host.attachShadow({ mode: 'open' })
@@ -30,6 +47,8 @@ export function createWidget(options: VibeTipOptions): VibeTipInstance {
 
   const root = el('div', 'vt-root')
   root.setAttribute('data-pos', options.position ?? 'bottom-right')
+  root.setAttribute('data-mode', inline ? 'inline' : 'floating')
+  root.style.setProperty('--vt-accent', options.accent ?? DEFAULT_ACCENT)
   shadow.appendChild(root)
 
   // Theme: explicit value wins; 'auto' tracks the OS scheme live
@@ -44,12 +63,15 @@ export function createWidget(options: VibeTipOptions): VibeTipInstance {
 
   // Panel
   const panel = el('div', 'vt-panel')
-  panel.setAttribute('role', 'dialog')
+  panel.setAttribute('role', inline ? 'region' : 'dialog')
   panel.setAttribute('aria-label', options.name ?? 'Support')
 
-  const closeBtn = el('button', 'vt-close', '✕')
-  closeBtn.setAttribute('aria-label', 'Close')
-  panel.appendChild(closeBtn)
+  let closeBtn: HTMLButtonElement | null = null
+  if (!inline) {
+    closeBtn = el('button', 'vt-close', '✕')
+    closeBtn.setAttribute('aria-label', 'Close')
+    panel.appendChild(closeBtn)
+  }
 
   if (options.name) panel.appendChild(el('div', 'vt-name', options.name))
   panel.appendChild(
@@ -82,7 +104,7 @@ export function createWidget(options: VibeTipOptions): VibeTipInstance {
   if (!options.hideBranding) {
     const footer = el('div', 'vt-footer')
     const brand = el('a', undefined, 'Powered by VibeTip')
-    brand.href = 'https://github.com/vibetip/vibetip'
+    brand.href = REPO_URL
     brand.target = '_blank'
     brand.rel = 'noopener noreferrer'
     footer.appendChild(brand)
@@ -90,30 +112,38 @@ export function createWidget(options: VibeTipOptions): VibeTipInstance {
   }
   root.appendChild(panel)
 
-  // Floating button
-  const fab = el('button', 'vt-fab')
-  fab.style.background = options.accent ?? DEFAULT_ACCENT
-  fab.setAttribute('aria-haspopup', 'dialog')
-  fab.appendChild(el('span', 'vt-fab-emoji', '☕'))
-  const buttonLabel = options.buttonLabel ?? 'Tip'
-  if (buttonLabel) {
-    fab.appendChild(el('span', undefined, buttonLabel))
-  } else {
-    fab.classList.add('vt-icon-only')
+  // Floating button (floating 모드 전용)
+  let fab: HTMLButtonElement | null = null
+  let fabEmoji: HTMLSpanElement | null = null
+  if (!inline) {
+    fab = el('button', 'vt-fab')
+    fab.setAttribute('aria-haspopup', 'dialog')
+    fabEmoji = el('span', 'vt-fab-emoji')
+    fabEmoji.innerHTML = ICON_SPARK
+    fab.appendChild(fabEmoji)
+    const buttonLabel = options.buttonLabel ?? 'Tip'
+    if (buttonLabel) {
+      fab.appendChild(el('span', 'vt-fab-label', buttonLabel))
+    } else {
+      fab.classList.add('vt-icon-only')
+    }
+    fab.setAttribute('aria-expanded', 'false')
+    root.appendChild(fab)
   }
-  fab.setAttribute('aria-expanded', 'false')
-  root.appendChild(fab)
 
-  let isOpen = false
+  let isOpen = inline
+  if (inline) root.classList.add('vt-open')
+
   const setOpen = (next: boolean, refocus = false) => {
+    if (inline) return // 인라인 카드는 항상 펼쳐져 있다
     isOpen = next
     root.classList.toggle('vt-open', next)
-    fab.setAttribute('aria-expanded', String(next))
-    if (!next && refocus) fab.focus()
+    fab!.setAttribute('aria-expanded', String(next))
+    if (!next && refocus) fab!.focus()
   }
 
-  fab.addEventListener('click', () => setOpen(!isOpen))
-  closeBtn.addEventListener('click', () => setOpen(false, true))
+  fab?.addEventListener('click', () => setOpen(!isOpen))
+  closeBtn?.addEventListener('click', () => setOpen(false, true))
 
   const onDocClick = (e: MouseEvent) => {
     if (isOpen && !e.composedPath().includes(host)) setOpen(false)
@@ -121,10 +151,12 @@ export function createWidget(options: VibeTipOptions): VibeTipInstance {
   const onKeydown = (e: KeyboardEvent) => {
     if (isOpen && e.key === 'Escape') setOpen(false, true)
   }
-  document.addEventListener('click', onDocClick)
-  document.addEventListener('keydown', onKeydown)
+  if (!inline) {
+    document.addEventListener('click', onDocClick)
+    document.addEventListener('keydown', onKeydown)
+  }
 
-  document.body.appendChild(host)
+  ;(mountTarget ?? document.body).appendChild(host)
 
   return {
     open: () => setOpen(true),

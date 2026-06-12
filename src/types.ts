@@ -34,6 +34,11 @@ export interface VibeTipOptions {
   accent?: string
   /** Corner for the floating button. Default: bottom-right */
   position?: 'bottom-right' | 'bottom-left'
+  /**
+   * Render inline inside this element (CSS selector or element) instead of a
+   * floating button — the panel becomes a static card in the page flow.
+   */
+  mount?: string | HTMLElement
   /** Color scheme. Default: auto (follows prefers-color-scheme) */
   theme?: 'light' | 'dark' | 'auto'
   /** Text next to the coffee icon on the floating button. Empty string for icon-only. */

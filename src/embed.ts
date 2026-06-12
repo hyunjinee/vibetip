@@ -38,6 +38,7 @@ if (script && linksAttr) {
       message: script.dataset.message,
       links: parseLinks(linksAttr),
       accent: script.dataset.accent,
+      mount: script.dataset.mount,
       position: script.dataset.position as VibeTipOptions['position'],
       theme: script.dataset.theme as VibeTipOptions['theme'],
       buttonLabel: script.dataset.buttonLabel,
