@@ -33,9 +33,6 @@
     "version-packages": "changeset version && node scripts/update-examples.mjs",
     "release": "npm run build && changeset publish"
   },
-  "publishConfig": {
-    "provenance": true
-  },
   "keywords": [
     "tip",
     "donation",
