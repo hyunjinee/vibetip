@@ -1,12 +1,15 @@
 export type LinkType =
+  | 'kakaopay'
+  | 'ctee'
+  | 'toonation'
+  | 'github'
+  | 'hanzan'
+  | 'toss'
   | 'buymeacoffee'
   | 'kofi'
-  | 'github'
   | 'patreon'
   | 'stripe'
   | 'paypal'
-  | 'toss'
-  | 'kakaopay'
   | 'custom'
 
 export interface TipLink {

@@ -2,9 +2,9 @@
  * Script-tag entry point. Auto-initializes from data attributes:
  *
  * <script src="https://unpkg.com/vibetip/dist/vibetip.iife.js"
- *   data-name="Jin"
+ *   data-name="홍길동"
  *   data-message="커피 한 잔이면 충분해요"
- *   data-links="https://buymeacoffee.com/jin, https://toss.me/jin"
+ *   data-links="https://qr.kakaopay.com/your-code, https://github.com/sponsors/yourname"
  *   data-accent="#FFDD00"
  *   data-position="bottom-right"
  *   data-theme="auto"></script>

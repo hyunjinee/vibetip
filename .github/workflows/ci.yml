@@ -1,0 +1,66 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 20
+          cache: npm
+
+      - run: npm ci
+
+      # build = tsc --noEmit && node build.mjs && tsc --emitDeclarationOnly
+      - run: npm run build
+
+      - name: Pack tarball for example smoke tests
+        run: npm pack
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: vibetip-tarball
+          path: vibetip-*.tgz
+
+  examples:
+    needs: build
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        example: [react-vite, nextjs]
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 20
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: vibetip-tarball
+
+      # Point the example at the HEAD tarball before install so CI works
+      # even before the registry version exists / catches regressions after.
+      - name: Use HEAD tarball instead of registry vibetip
+        working-directory: examples/${{ matrix.example }}
+        run: npm pkg set dependencies.vibetip="file:$(ls "$GITHUB_WORKSPACE"/vibetip-*.tgz)"
+
+      - name: Install
+        working-directory: examples/${{ matrix.example }}
+        run: npm install --no-package-lock
+
+      - name: Build
+        working-directory: examples/${{ matrix.example }}
+        run: npm run build

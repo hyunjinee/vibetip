@@ -59,6 +59,15 @@ export function createWidget(options: VibeTipOptions): VibeTipInstance {
   const linksWrap = el('div', 'vt-links')
   for (const raw of options.links) {
     const link = resolveLink(raw)
+    if (link.deadNotice) {
+      // 종료된 서비스 링크: 깨진 버튼 대신 교체 안내를 보여준다
+      console.warn(`[vibetip] dead payment link (${link.url}): ${link.deadNotice}`)
+      const dead = el('div', 'vt-link vt-dead')
+      dead.appendChild(el('span', 'vt-link-emoji', '⚠️'))
+      dead.appendChild(el('span', undefined, link.deadNotice))
+      linksWrap.appendChild(dead)
+      continue
+    }
     const a = el('a', 'vt-link')
     a.href = link.url
     a.target = '_blank'
@@ -92,23 +101,25 @@ export function createWidget(options: VibeTipOptions): VibeTipInstance {
   } else {
     fab.classList.add('vt-icon-only')
   }
+  fab.setAttribute('aria-expanded', 'false')
   root.appendChild(fab)
 
   let isOpen = false
-  const setOpen = (next: boolean) => {
+  const setOpen = (next: boolean, refocus = false) => {
     isOpen = next
     root.classList.toggle('vt-open', next)
     fab.setAttribute('aria-expanded', String(next))
+    if (!next && refocus) fab.focus()
   }
 
   fab.addEventListener('click', () => setOpen(!isOpen))
-  closeBtn.addEventListener('click', () => setOpen(false))
+  closeBtn.addEventListener('click', () => setOpen(false, true))
 
   const onDocClick = (e: MouseEvent) => {
     if (isOpen && !e.composedPath().includes(host)) setOpen(false)
   }
   const onKeydown = (e: KeyboardEvent) => {
-    if (isOpen && e.key === 'Escape') setOpen(false)
+    if (isOpen && e.key === 'Escape') setOpen(false, true)
   }
   document.addEventListener('click', onDocClick)
   document.addEventListener('keydown', onKeydown)

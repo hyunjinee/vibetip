@@ -112,6 +112,15 @@ export const CSS = `
   color: var(--vt-muted);
   font-size: 13px;
 }
+.vt-dead {
+  cursor: default;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 1.4;
+  color: var(--vt-muted);
+  border-style: dashed;
+}
+.vt-dead:hover { background: transparent; border-color: var(--vt-border); }
 
 .vt-footer {
   margin-top: 14px;
@@ -138,7 +147,18 @@ export const CSS = `
 }
 .vt-close:hover { color: var(--vt-fg); }
 
+.vt-fab:focus-visible,
+.vt-link:focus-visible,
+.vt-close:focus-visible {
+  outline: 2px solid var(--vt-fg, #18181b);
+  outline-offset: 2px;
+}
+
 @media (max-width: 380px) {
   .vt-panel { width: calc(100vw - 40px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .vt-fab, .vt-panel, .vt-link { transition: none; }
 }
 `
