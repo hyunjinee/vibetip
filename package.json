@@ -1,0 +1,36 @@
+{
+  "name": "vibetip",
+  "version": "0.1.0",
+  "description": "Drop-in tip button for vibe-coded apps. One script tag, zero backend.",
+  "license": "MIT",
+  "type": "module",
+  "main": "./dist/vibetip.js",
+  "module": "./dist/vibetip.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/vibetip.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc --noEmit && node build.mjs && tsc --emitDeclarationOnly",
+    "typecheck": "tsc --noEmit",
+    "dev": "node build.mjs --watch"
+  },
+  "keywords": [
+    "tip",
+    "donation",
+    "buy-me-a-coffee",
+    "sponsor",
+    "widget",
+    "vibe-coding"
+  ],
+  "devDependencies": {
+    "esbuild": "^0.25.0",
+    "typescript": "^5.6.0"
+  }
+}
