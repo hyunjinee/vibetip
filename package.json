@@ -27,11 +27,11 @@
     "dist"
   ],
   "scripts": {
-    "build": "tsc --noEmit && node build.mjs && tsc --emitDeclarationOnly",
+    "build": "tsc --noEmit && bun run build.ts && tsc --emitDeclarationOnly",
     "typecheck": "tsc --noEmit",
-    "dev": "node build.mjs --watch",
-    "version-packages": "changeset version && node scripts/update-examples.mjs",
-    "release": "npm run build && changeset publish"
+    "dev": "bun run build.ts --watch",
+    "version-packages": "changeset version && bun run scripts/update-examples.mjs",
+    "release": "bun run build && changeset publish"
   },
   "keywords": [
     "tip",
@@ -44,7 +44,6 @@
   "devDependencies": {
     "@changesets/changelog-github": "^0.7.0",
     "@changesets/cli": "^2.31.0",
-    "esbuild": "^0.25.0",
     "typescript": "^5.6.0"
   },
   "overrides": {

@@ -15,18 +15,17 @@ jobs:
     steps:
       - uses: actions/checkout@v6
 
-      - uses: actions/setup-node@v6
+      - uses: oven-sh/setup-bun@v2
         with:
-          node-version: 20
-          cache: npm
+          bun-version: latest
 
-      - run: npm ci
+      - run: bun install --frozen-lockfile
 
-      # build = tsc --noEmit && node build.mjs && tsc --emitDeclarationOnly
-      - run: npm run build
+      # build = tsc --noEmit && bun run build.ts && tsc --emitDeclarationOnly
+      - run: bun run build
 
       - name: Pack tarball for example smoke tests
-        run: npm pack
+        run: bun pm pack
 
       - uses: actions/upload-artifact@v4
         with:
@@ -43,24 +42,24 @@ jobs:
     steps:
       - uses: actions/checkout@v6
 
-      - uses: actions/setup-node@v6
+      - uses: oven-sh/setup-bun@v2
         with:
-          node-version: 20
+          bun-version: latest
 
       - uses: actions/download-artifact@v4
         with:
           name: vibetip-tarball
 
-      # Point the example at the HEAD tarball before install so CI works
-      # even before the registry version exists / catches regressions after.
+      - name: Install deps
+        working-directory: examples/${{ matrix.example }}
+        run: bun install
+
+      # Overlay the HEAD build so CI validates examples against this commit,
+      # not just the published registry version.
       - name: Use HEAD tarball instead of registry vibetip
         working-directory: examples/${{ matrix.example }}
-        run: npm pkg set dependencies.vibetip="file:$(ls "$GITHUB_WORKSPACE"/vibetip-*.tgz)"
-
-      - name: Install
-        working-directory: examples/${{ matrix.example }}
-        run: npm install --no-package-lock
+        run: bun add "$(ls "$GITHUB_WORKSPACE"/vibetip-*.tgz)"
 
       - name: Build
         working-directory: examples/${{ matrix.example }}
-        run: npm run build
+        run: bun run build

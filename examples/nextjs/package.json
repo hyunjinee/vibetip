@@ -10,7 +10,7 @@
     "next": "^15.0.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "vibetip": "file:../../vibetip-0.1.0.tgz"
+    "vibetip": "^0.1.0"
   },
   "devDependencies": {
     "@types/node": "^20.0.0",

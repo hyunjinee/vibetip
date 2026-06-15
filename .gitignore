@@ -5,5 +5,7 @@ dist/
 .gstack/
 *.tgz
 examples/*/package-lock.json
+examples/*/bun.lock
+examples/*/bun.lockb
 examples/nextjs/.next/
 examples/react-vite/dist/

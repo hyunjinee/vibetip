@@ -112,13 +112,16 @@ React/Next.js 사용법은 [examples/](./examples)를 보세요.
 
 ## 개발 & 릴리즈
 
+[Bun](https://bun.com)으로 개발합니다.
+
 ```bash
-npm install
-npm run build     # tsc 타입체크 + esbuild 번들
+bun install
+bun run build     # tsc 타입체크 + Bun 번들러 + .d.ts 생성
+bun run dev       # 소스 변경 시 자동 재빌드
 open demo/index.html
 ```
 
-릴리즈는 [changesets](https://github.com/changesets/changesets)로 자동화되어 있습니다. 변경 PR에 `npx changeset`으로 변경 요약을 함께 커밋하면, main 머지 시 Version Packages PR이 생성되고 그 PR을 머지하면 npm에 자동 배포됩니다(OIDC trusted publishing + provenance).
+릴리즈는 [changesets](https://github.com/changesets/changesets)로 자동화되어 있습니다. 변경 PR에 `bun changeset`으로 변경 요약을 함께 커밋하면, main 머지 시 Version Packages PR이 생성되고 그 PR을 머지하면 npm에 자동 배포됩니다. 빌드는 Bun으로 하지만, 게시는 `changeset publish`가 `npm publish`로 위임해 OIDC trusted publishing + provenance를 그대로 사용합니다.
 
 ## License
 
