@@ -1,5 +1,11 @@
 # vibetip
 
+## 0.3.0
+
+### Minor Changes
+
+- [#2](https://github.com/hyunjinee/vibetip/pull/2) [`4dbb99b`](https://github.com/hyunjinee/vibetip/commit/4dbb99b4725ff4aeaa042d2436dda5d441bcc2f3) Thanks [@hyunjinee](https://github.com/hyunjinee)! - Show KakaoPay transfer links as scannable QR codes inside the widget on desktop while preserving direct-link behavior on mobile devices.
+
 ## 0.2.0
 
 ### Minor Changes
