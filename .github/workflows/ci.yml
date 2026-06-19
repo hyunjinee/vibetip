@@ -17,7 +17,9 @@ jobs:
 
       - uses: oven-sh/setup-bun@v2
         with:
-          bun-version: latest
+          # Pinned: `latest` once shipped a broken IIFE bundle (0.3.0). Bump
+          # deliberately after verifying `bun run build` still passes its guard.
+          bun-version: 1.3.5
 
       - run: bun install --frozen-lockfile
 

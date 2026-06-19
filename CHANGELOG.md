@@ -1,5 +1,11 @@
 # vibetip
 
+## 0.3.1
+
+### Patch Changes
+
+- Fix the broken script-tag / CDN build. The published `vibetip.iife.js` was a ~1.5KB shell that externalized the widget code instead of bundling it, so every `<script src="…vibetip.iife.js">` (and CDN) user got a no-op `VibeTip is not defined`. The IIFE now bundles the widget + QR generator as intended, and `bun run build` fails fast if the output is ever missing the widget code again.
+
 ## 0.3.0
 
 ### Minor Changes

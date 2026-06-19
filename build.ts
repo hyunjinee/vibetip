@@ -32,6 +32,22 @@ async function build() {
       throw new AggregateError(result.logs, 'bun build failed')
     }
   }
+
+  // Guard against a silently broken bundle. A correct build inlines the widget
+  // (Shadow DOM) and lean-qr; a regression that externalizes ./index emits a
+  // ~1.5KB shell with no widget code — exactly what shipped as 0.3.0's IIFE and
+  // broke every CDN/script-tag user. Fail loudly before that can be published.
+  for (const file of ['dist/vibetip.js', 'dist/vibetip.iife.js']) {
+    const code = await Bun.file(file).text()
+    if (code.length < 8000 || !code.includes('attachShadow')) {
+      throw new Error(
+        `[build] ${file} looks broken (${code.length} bytes, attachShadow: ${code.includes(
+          'attachShadow',
+        )}). The widget code was not bundled — refusing to emit a broken build.`,
+      )
+    }
+  }
+
   console.log('built dist/vibetip.js + dist/vibetip.iife.js')
 }
 
