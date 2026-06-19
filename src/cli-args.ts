@@ -1,4 +1,4 @@
-export interface CliArgs {
+interface CliArgs {
   link?: string
   out?: string
   name?: string

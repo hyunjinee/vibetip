@@ -1,7 +1,7 @@
 import { correction, generate } from 'lean-qr'
 import { detectType } from './presets'
 
-export interface CardOptions {
+interface CardOptions {
   /** 검증된 카카오페이 송금 URL */
   url: string
   name?: string

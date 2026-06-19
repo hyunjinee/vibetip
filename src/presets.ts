@@ -14,7 +14,7 @@ export function detectType(url: string): LinkType {
   )
 }
 
-export interface ResolvedLink {
+interface ResolvedLink {
   url: string
   type: LinkType
   label: string

@@ -14,9 +14,6 @@
 import { init } from './index'
 import type { TipLink, VibeTipOptions } from './types'
 
-export { init }
-export type { VibeTipOptions }
-
 // Expose a global so script-tag users can also call VibeTip.init() manually
 // (e.g. inline mount). Assigned explicitly so the IIFE works with any bundler,
 // without relying on a bundler-specific globalName option.
