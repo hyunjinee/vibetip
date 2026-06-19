@@ -1,6 +1,6 @@
 // Bundles the library with Bun's native bundler (no esbuild dependency).
 // Run: `bun run build.ts` (add --watch to rebuild on source changes).
-import { watch } from 'node:fs'
+import { chmodSync, readFileSync, watch, writeFileSync } from 'node:fs'
 
 const watching = process.argv.includes('--watch')
 
@@ -26,7 +26,20 @@ async function build() {
     sourcemap: 'linked',
   })
 
-  for (const result of [esm, iife]) {
+  // CLI build (bin: `vibetip`). @resvg/resvg-js stays external so it is loaded
+  // dynamically at runtime only when present.
+  const cli = await Bun.build({
+    entrypoints: ['src/cli.ts'],
+    outdir: 'dist',
+    naming: 'cli.js',
+    format: 'esm',
+    target: 'node',
+    external: ['@resvg/resvg-js'],
+    minify: true,
+    sourcemap: 'linked',
+  })
+
+  for (const result of [esm, iife, cli]) {
     if (!result.success) {
       for (const log of result.logs) console.error(log)
       throw new AggregateError(result.logs, 'bun build failed')
@@ -48,7 +61,15 @@ async function build() {
     }
   }
 
-  console.log('built dist/vibetip.js + dist/vibetip.iife.js')
+  // dist/cli.js is the `vibetip` bin: ensure a shebang and the executable bit.
+  const cliPath = 'dist/cli.js'
+  const cliCode = readFileSync(cliPath, 'utf8')
+  if (!cliCode.startsWith('#!')) {
+    writeFileSync(cliPath, `#!/usr/bin/env node\n${cliCode}`)
+  }
+  chmodSync(cliPath, 0o755)
+
+  console.log('built dist/vibetip.js + dist/vibetip.iife.js + dist/cli.js')
 }
 
 await build()

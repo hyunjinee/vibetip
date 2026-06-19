@@ -12,7 +12,7 @@
     "emitDeclarationOnly": true,
     "outDir": "dist",
     "skipLibCheck": true,
-    "types": ["bun-types"]
+    "types": ["bun-types", "node"]
   },
   "include": ["src"],
   "exclude": ["src/**/*.test.ts"]
