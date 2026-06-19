@@ -9,3 +9,4 @@ examples/*/bun.lock
 examples/*/bun.lockb
 examples/nextjs/.next/
 examples/react-vite/dist/
+video/out/

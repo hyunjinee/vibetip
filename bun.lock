@@ -7,6 +7,7 @@
       "devDependencies": {
         "@changesets/changelog-github": "^0.7.0",
         "@changesets/cli": "^2.31.0",
+        "lean-qr": "^2.7.1",
         "typescript": "^5.6.0",
       },
     },
@@ -136,6 +137,8 @@
     "js-yaml": ["js-yaml@4.2.0", "", { "dependencies": { "argparse": "^2.0.1" }, "bin": { "js-yaml": "bin/js-yaml.js" } }, "sha512-ePWsvanv0DWuDRsW8dnt+R4jQ31SCRCQ7hhNcPXZPsoBZiemuZNYGf7adZdqX2D86j6rvKp3RpCxVTSb8WQlOw=="],
 
     "jsonfile": ["jsonfile@4.0.0", "", { "optionalDependencies": { "graceful-fs": "^4.1.6" } }, "sha512-m6F1R3z8jjlf2imQHS2Qez5sjKWQzbuuhuJ/FKYFRZvPE3PuHcSMVZzfsLhGVOkfd20obL5SWEBew5ShlquNxg=="],
+
+    "lean-qr": ["lean-qr@2.7.1", "", { "bin": { "lean-qr": "cli.mjs" } }, "sha512-4WfYs9t1jpiF6nDRxe9LFlWzRhvVeiV3tpsjAkrijHx5dtrF0E4dupvjJX3SUoS18CAaU6QF2gSZILO10z8utA=="],
 
     "locate-path": ["locate-path@5.0.0", "", { "dependencies": { "p-locate": "^4.1.0" } }, "sha512-t7hw9pI+WvuwNJXwk5zVHpyhIqzg2qTlklJOf0mVxGSbe3Fp2VieZcduNYjaLDoy6p9uGpQEGWG87WpMKlNq8g=="],
 

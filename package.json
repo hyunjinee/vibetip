@@ -24,7 +24,8 @@
     }
   },
   "files": [
-    "dist"
+    "dist",
+    "THIRD_PARTY_NOTICES.md"
   ],
   "scripts": {
     "build": "tsc --noEmit && bun run build.ts && tsc --emitDeclarationOnly",
@@ -44,6 +45,7 @@
   "devDependencies": {
     "@changesets/changelog-github": "^0.7.0",
     "@changesets/cli": "^2.31.0",
+    "lean-qr": "^2.7.1",
     "typescript": "^5.6.0"
   },
   "overrides": {
