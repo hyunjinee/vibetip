@@ -9,7 +9,7 @@
 </p>
 
 <p align="center">
-  <a href="https://vibetip-endwaterlab.surge.sh/"><strong>▶ 라이브 데모</strong></a> — PC에서는 QR, 모바일에서는 카카오페이 송금 화면이 열립니다.
+  <a href="https://vibetip-demo.vercel.app/"><strong>▶ 라이브 데모</strong></a> — PC에서는 QR, 모바일에서는 카카오페이 송금 화면이 열립니다.
 </p>
 
 - gzip 기준 **~10KB**, 런타임 의존성 0개, 클릭 전까지 추가 네트워크 요청 0회
