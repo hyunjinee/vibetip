@@ -1,5 +1,11 @@
 # vibetip
 
+## 0.4.1
+
+### Patch Changes
+
+- Replace the QR indicator icon in the panel's link button with a cleaner glyph (three finder squares + one alignment marker); the old one looked broken at small sizes.
+
 ## 0.4.0
 
 ### Minor Changes
