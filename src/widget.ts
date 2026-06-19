@@ -1,3 +1,5 @@
+import { correction, generate } from 'lean-qr'
+import { toSvg } from 'lean-qr/extras/svg'
 import { resolveLink } from './presets'
 import { CSS } from './styles'
 import type { VibeTipInstance, VibeTipOptions } from './types'
@@ -7,6 +9,8 @@ const REPO_URL = 'https://github.com/hyunjinee/vibetip'
 
 const ICON_ARROW =
   '<svg viewBox="0 0 20 20" width="16" height="16" aria-hidden="true"><path d="M6 14L14 6M8 6h6v6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>'
+const ICON_QR =
+  '<svg viewBox="0 0 20 20" width="16" height="16" aria-hidden="true"><path d="M3 3h5v5H3zm9 0h5v5h-5zM3 12h5v5H3zm10 0h1v2h-2v-1m4-1h1v2h-1m-4 2h2v1h-2m4-2h1v2h-2v-1" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>'
 
 function el<K extends keyof HTMLElementTagNameMap>(
   tag: K,
@@ -17,6 +21,16 @@ function el<K extends keyof HTMLElementTagNameMap>(
   if (className) node.className = className
   if (text != null) node.textContent = text
   return node
+}
+
+function isMobileDevice(): boolean {
+  const nav = navigator as Navigator & { userAgentData?: { mobile?: boolean } }
+  const ua = navigator.userAgent
+  return (
+    nav.userAgentData?.mobile === true ||
+    /Android|iPhone|iPad|iPod|IEMobile|Opera Mini/i.test(ua) ||
+    (/Macintosh/i.test(ua) && navigator.maxTouchPoints > 1)
+  )
 }
 
 export function createWidget(options: VibeTipOptions): VibeTipInstance {
@@ -82,6 +96,45 @@ export function createWidget(options: VibeTipOptions): VibeTipInstance {
   panel.appendChild(header)
 
   const linksWrap = el('div', 'vt-links')
+  const qrView = el('div', 'vt-qr-view')
+  qrView.hidden = true
+
+  const qrBack = el('button', 'vt-qr-back', '← 송금 방법으로 돌아가기')
+  qrBack.type = 'button'
+  const qrCode = el('div', 'vt-qr-code')
+  const qrTitle = el('div', 'vt-qr-title', '휴대폰으로 QR을 스캔하세요')
+  const qrHint = el(
+    'div',
+    'vt-qr-hint',
+    '기본 카메라나 카카오톡 코드스캔으로 찍으면 카카오페이 송금 화면이 열립니다.',
+  )
+  qrView.append(qrBack, qrCode, qrTitle, qrHint)
+
+  let activeQrTrigger: HTMLButtonElement | null = null
+  const hideQr = (refocus = false) => {
+    qrView.hidden = true
+    linksWrap.hidden = false
+    if (refocus) activeQrTrigger?.focus()
+    activeQrTrigger = null
+  }
+  const showQr = (url: string, trigger: HTMLButtonElement) => {
+    const svg = toSvg(generate(url, { minCorrectionLevel: correction.M }), document, {
+      width: 208,
+      height: 208,
+      pad: 4,
+      on: '#111111',
+      off: '#ffffff',
+    })
+    svg.setAttribute('role', 'img')
+    svg.setAttribute('aria-label', '카카오페이 송금 QR코드')
+    qrCode.replaceChildren(svg)
+    activeQrTrigger = trigger
+    linksWrap.hidden = true
+    qrView.hidden = false
+    qrBack.focus()
+  }
+
+  const mobileDevice = isMobileDevice()
   for (const raw of options.links) {
     const link = resolveLink(raw)
     if (link.deadNotice) {
@@ -93,19 +146,34 @@ export function createWidget(options: VibeTipOptions): VibeTipInstance {
       linksWrap.appendChild(dead)
       continue
     }
-    const a = el('a', 'vt-link')
-    a.href = link.url
-    a.target = '_blank'
-    a.rel = 'noopener noreferrer'
-    a.dataset.type = link.type
-    a.appendChild(el('span', 'vt-link-emoji', link.icon))
-    a.appendChild(el('span', 'vt-link-label', link.label))
+
+    let paymentControl: HTMLAnchorElement | HTMLButtonElement
+    const desktopKakaoPay = link.type === 'kakaopay' && !mobileDevice
+    if (desktopKakaoPay) {
+      const button = el('button', 'vt-link')
+      button.type = 'button'
+      button.setAttribute('aria-label', `${link.label} QR코드 보기`)
+      button.addEventListener('click', () => showQr(link.url, button))
+      paymentControl = button
+    } else {
+      const anchor = el('a', 'vt-link')
+      anchor.href = link.url
+      anchor.target = '_blank'
+      anchor.rel = 'noopener noreferrer'
+      paymentControl = anchor
+    }
+
+    paymentControl.dataset.type = link.type
+    paymentControl.appendChild(el('span', 'vt-link-emoji', link.icon))
+    paymentControl.appendChild(el('span', 'vt-link-label', link.label))
     const arrow = el('span', 'vt-link-arrow')
-    arrow.innerHTML = ICON_ARROW
-    a.appendChild(arrow)
-    linksWrap.appendChild(a)
+    arrow.innerHTML = desktopKakaoPay ? ICON_QR : ICON_ARROW
+    paymentControl.appendChild(arrow)
+    linksWrap.appendChild(paymentControl)
   }
   panel.appendChild(linksWrap)
+  panel.appendChild(qrView)
+  qrBack.addEventListener('click', () => hideQr(true))
 
   if (!options.hideBranding) {
     const footer = el('div', 'vt-footer')
@@ -141,6 +209,7 @@ export function createWidget(options: VibeTipOptions): VibeTipInstance {
     isOpen = next
     root.classList.toggle('vt-open', next)
     fab!.setAttribute('aria-expanded', String(next))
+    if (!next) hideQr()
     if (!next && refocus) fab!.focus()
   }
 
@@ -151,7 +220,10 @@ export function createWidget(options: VibeTipOptions): VibeTipInstance {
     if (isOpen && !e.composedPath().includes(host)) setOpen(false)
   }
   const onKeydown = (e: KeyboardEvent) => {
-    if (isOpen && e.key === 'Escape') setOpen(false, true)
+    if (isOpen && e.key === 'Escape') {
+      if (!qrView.hidden) hideQr(true)
+      else setOpen(false, true)
+    }
   }
   if (!inline) {
     document.addEventListener('click', onDocClick)
