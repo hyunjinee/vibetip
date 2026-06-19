@@ -31,3 +31,8 @@ test('다크 테마는 라이트와 다르다', () => {
   const dark = renderCardSvg({ url: URL, theme: 'dark' })
   expect(light).not.toBe(dark)
 })
+
+test('accent도 이스케이프해 주입을 막는다', () => {
+  const svg = renderCardSvg({ url: URL, accent: '"/><script>alert(1)</script>' })
+  expect(svg).not.toContain('<script>')
+})

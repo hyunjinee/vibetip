@@ -76,7 +76,7 @@ export function renderCardSvg(opts: CardOptions): string {
   const pillX = 36
   const pillW = W - pillX * 2
   parts.push(
-    `<rect x="${pillX}" y="${cursor}" width="${pillW}" height="${pillH}" rx="14" fill="${accent}"/>` +
+    `<rect x="${pillX}" y="${cursor}" width="${pillW}" height="${pillH}" rx="14" fill="${esc(accent)}"/>` +
       `<text x="${W / 2}" y="${cursor + pillH / 2 + 6}" text-anchor="middle" font-size="17" font-weight="800" fill="#191f28">${esc(label)}</text>`,
   )
   cursor += pillH + 30

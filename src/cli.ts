@@ -85,6 +85,7 @@ export async function run(argv: string[]): Promise<void> {
 }
 
 run(process.argv.slice(2)).catch((err) => {
-  console.error(`[vibetip] ${err instanceof Error ? err.message : err}`)
+  // presets.ts errors already carry a [vibetip] prefix; print as-is to avoid doubling.
+  console.error(err instanceof Error ? err.message : String(err))
   process.exit(1)
 })
