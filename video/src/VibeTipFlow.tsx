@@ -312,7 +312,7 @@ const AppPage = ({frame}: {frame: number}) => {
     extrapolateRight: 'clamp',
     easing: easeOut,
   });
-  const cursorY = interpolate(frame, [52, 108, 150, 208, 220], [340, 699, 699, 365, 365], {
+  const cursorY = interpolate(frame, [52, 108, 150, 208, 220], [340, 699, 699, 558, 558], {
     extrapolateLeft: 'clamp',
     extrapolateRight: 'clamp',
     easing: easeOut,
