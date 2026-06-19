@@ -18,14 +18,21 @@ const USAGE = `vibetip image — 카카오페이 후원 카드 이미지 생성
   --label <text>        라벨 (기본: 카카오페이로 후원)
   --accent <color>      포인트 색 (기본: #FFDD00)
   --theme <light|dark>  (기본: light)
+  --scale <n>           PNG 해상도 배율 (기본: 2 — 840px)
   -h, --help            이 도움말`
 
 const PNG_HINT = 'PNG를 만들려면 @resvg/resvg-js 가 필요합니다: npm i -D @resvg/resvg-js'
 
-async function svgToPng(svg: string): Promise<Uint8Array | null> {
+async function svgToPng(svg: string, scale: number): Promise<Uint8Array | null> {
   try {
     const mod = await import('@resvg/resvg-js')
-    return new mod.Resvg(svg).render().asPng()
+    return new mod.Resvg(svg, {
+      // Render above the SVG's intrinsic 420px so text and the QR stay crisp.
+      fitTo: { mode: 'zoom', value: scale },
+      font: { loadSystemFonts: true },
+    })
+      .render()
+      .asPng()
   } catch (err) {
     const e = err as { code?: string; message?: string }
     if (e.code === 'ERR_MODULE_NOT_FOUND' || /Cannot find (module|package)/.test(e.message ?? '')) {
@@ -49,6 +56,11 @@ export async function run(argv: string[]): Promise<void> {
     throw new Error(`--link 가 필요합니다.\n\n${USAGE}`)
   }
 
+  const scale = args.scale ? Number(args.scale) : 2
+  if (!Number.isFinite(scale) || scale <= 0) {
+    throw new Error('--scale must be a positive number')
+  }
+
   const svg = renderCardSvg({
     url: args.link,
     name: args.name,
@@ -67,7 +79,7 @@ export async function run(argv: string[]): Promise<void> {
     return
   }
   if (ext === '.png') {
-    const png = await svgToPng(svg)
+    const png = await svgToPng(svg, scale)
     if (!png) throw new Error(PNG_HINT)
     writeFileSync(out, png)
     console.log(`✓ ${out}`)
@@ -75,7 +87,7 @@ export async function run(argv: string[]): Promise<void> {
   }
   writeFileSync(`${out}.svg`, svg)
   console.log(`✓ ${out}.svg`)
-  const png = await svgToPng(svg)
+  const png = await svgToPng(svg, scale)
   if (png) {
     writeFileSync(`${out}.png`, png)
     console.log(`✓ ${out}.png`)

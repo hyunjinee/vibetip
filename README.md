@@ -101,8 +101,8 @@ npx vibetip image --link https://qr.kakaopay.com/your-code --name 홍길동 --ou
 - `@resvg/resvg-js`가 설치돼 있으면 `tip.png`도 함께 생성됩니다
   (`npm i -D @resvg/resvg-js`). Notion 등 SVG가 안 보이는 곳엔 PNG를 쓰세요.
 
-옵션: `--message`, `--label`, `--accent`, `--theme light|dark`. 자세한 건
-`npx vibetip image --help`.
+옵션: `--message`, `--label`, `--accent`, `--theme light|dark`, `--scale`(PNG
+해상도 배율, 기본 2). 자세한 건 `npx vibetip image --help`.
 
 ## Examples
 

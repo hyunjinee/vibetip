@@ -1,5 +1,11 @@
 # vibetip
 
+## 0.4.2
+
+### Patch Changes
+
+- `vibetip image` now renders PNG at 2x by default (new `--scale <n>` option) and loads system fonts, so the card's text and QR stay sharp instead of rendering at the SVG's intrinsic 420px.
+
 ## 0.4.1
 
 ### Patch Changes

@@ -6,10 +6,11 @@ export interface CliArgs {
   label?: string
   accent?: string
   theme?: 'light' | 'dark'
+  scale?: string
   help?: boolean
 }
 
-const FLAGS = ['link', 'out', 'name', 'message', 'label', 'accent', 'theme'] as const
+const FLAGS = ['link', 'out', 'name', 'message', 'label', 'accent', 'theme', 'scale'] as const
 
 export function parseArgs(argv: string[]): CliArgs {
   const args: CliArgs = {}
