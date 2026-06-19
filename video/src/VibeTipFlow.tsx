@@ -14,6 +14,7 @@ const MUTED = '#6B7684';
 const PAPER = '#F7F8FA';
 const WHITE = '#FFFFFF';
 const DARK = '#101318';
+const DEMO_URL = 'vibetip-endwaterlab.surge.sh';
 const FONT =
   '-apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Pretendard Variable", Pretendard, "Noto Sans KR", sans-serif';
 
@@ -89,6 +90,34 @@ const Logo = ({inverse = false, size = 64}: {inverse?: boolean; size?: number}) 
     </div>
   </div>
 );
+
+const KakaoPayLogo = ({compact = false}: {compact?: boolean}) => {
+  const symbolSize = compact ? 22 : 34;
+
+  return (
+    <div
+      aria-label="KakaoPay"
+      style={{
+        display: 'inline-flex',
+        alignItems: 'center',
+        flexShrink: 0,
+      }}
+    >
+      <svg
+        width={symbolSize}
+        height={symbolSize}
+        viewBox="0 0 34 34"
+        aria-hidden="true"
+        style={{display: 'block'}}
+      >
+        <path
+          d="M17 3.5C9.27 3.5 3 8.51 3 14.7c0 4 2.62 7.5 6.56 9.48l-1.4 4.2c-.17.5.4.9.82.62l5-3.35c.98.18 2 .27 3.02.27 7.73 0 14-5.02 14-11.21C31 8.5 24.73 3.5 17 3.5Z"
+          fill={INK}
+        />
+      </svg>
+    </div>
+  );
+};
 
 const SceneLabel = ({step, text, dark = false}: {step: string; text: string; dark?: boolean}) => {
   const frame = useCurrentFrame();
@@ -217,14 +246,14 @@ const BrowserChrome = ({children}: {children: ReactNode}) => (
           letterSpacing: '-0.01em',
         }}
       >
-        stroll.today/seoul
+        {DEMO_URL}
       </div>
     </div>
     <div style={{position: 'absolute', inset: '64px 0 0'}}>{children}</div>
   </div>
 );
 
-const TipLink = ({icon, label, accent = false}: {icon: string; label: string; accent?: boolean}) => (
+const TipLink = ({icon, label, accent = false}: {icon: ReactNode; label: string; accent?: boolean}) => (
   <div
     style={{
       height: 78,
@@ -451,9 +480,7 @@ const AppPage = ({frame}: {frame: number}) => {
           <div style={{...baseText, color: MUTED, fontSize: 17, marginTop: 4}}>이 산책이 좋았다면 커피 한 잔!</div>
         </div>
         <div style={{display: 'flex', flexDirection: 'column', gap: 10}}>
-          <TipLink icon="💛" label="카카오페이 송금" accent={linkHover > 0.45} />
-          <TipLink icon="☕" label="크티로 후원" />
-          <TipLink icon="💜" label="GitHub Sponsors" />
+          <TipLink icon={<KakaoPayLogo compact />} label="카카오페이 송금" accent={linkHover > 0.45} />
         </div>
         <div style={{...baseText, color: '#8B95A1', textAlign: 'center', fontSize: 13, fontWeight: 650, margin: '16px 0 2px'}}>
           <span style={{color: YELLOW}}>●</span> &nbsp;Powered by VibeTip
@@ -508,7 +535,7 @@ const Intro = () => {
             letterSpacing: '-0.02em',
           }}
         >
-          방문자는 원하는 결제 링크로 바로 이동합니다
+          카카오페이 송금 링크를 모바일과 PC에 맞게 연결합니다
         </div>
       </div>
     </AbsoluteFill>
@@ -575,7 +602,7 @@ const PaymentScene = () => {
 
   return (
     <AbsoluteFill style={{background: DARK}}>
-      <SceneLabel step="02" text="결제 플랫폼에서 금액을 선택하고 보냅니다" dark />
+      <SceneLabel step="02" text="카카오페이에서 금액을 선택하고 보냅니다" dark />
       <div
         style={{
           position: 'absolute',
@@ -586,16 +613,16 @@ const PaymentScene = () => {
           transform: `translateX(${interpolate(phoneIn, [0, 1], [-40, 0])}px)`,
         }}
       >
-        <Eyebrow dark>Direct payment link</Eyebrow>
+        <Eyebrow dark>KakaoPay transfer link</Eyebrow>
         <div style={{...baseText, color: WHITE, fontSize: 68, fontWeight: 830, lineHeight: 1.1, marginTop: 22}}>
           앱 안에서 헤매지 않고,
           <br />
-          바로 송금 화면으로
+          바로 카카오페이 송금 화면으로
         </div>
         <div style={{...baseText, color: '#A8B0BC', fontSize: 24, lineHeight: 1.65, marginTop: 32}}>
           별도 회원가입도, VibeTip 결제창도 없습니다.
           <br />
-          사용자가 익숙한 결제 수단을 그대로 사용합니다.
+          사용자가 익숙한 카카오페이를 그대로 사용합니다.
         </div>
         <div
           style={{
@@ -636,7 +663,7 @@ const PaymentScene = () => {
           {success < 0.2 ? (
             <>
               <div style={{height: 94, background: YELLOW, display: 'flex', alignItems: 'flex-end', padding: '0 28px 18px'}}>
-                <div style={{...baseText, fontSize: 24, fontWeight: 850, letterSpacing: '-0.04em'}}>kakao pay</div>
+                <KakaoPayLogo />
               </div>
               <div style={{padding: '34px 28px'}}>
                 <div style={{...baseText, color: MUTED, fontSize: 17, fontWeight: 650}}>STROLL SEOUL · 홍길동님에게</div>
@@ -757,7 +784,7 @@ const DirectScene = () => {
           transform: `translateY(${interpolate(title, [0, 1], [28, 0])}px)`,
         }}
       >
-        팁은 결제 플랫폼을 통해
+        팁은 카카오페이를 통해
         <br />
         만든 사람에게 직접 전달됩니다
       </div>
@@ -829,7 +856,7 @@ const DirectScene = () => {
           letterSpacing: '-0.02em',
         }}
       >
-        VibeTip은 결제를 중개하지 않고, 선택한 링크만 연결합니다
+        VibeTip은 송금을 중개하지 않고, 카카오페이 송금 링크만 연결합니다
       </div>
     </AbsoluteFill>
   );
@@ -882,7 +909,7 @@ const Outro = () => {
         </div>
         <div style={{width: 46, height: 4, borderRadius: 999, background: YELLOW, marginTop: 38, opacity: message}} />
         <div style={{...baseText, color: '#737D89', fontSize: 17, marginTop: 22, opacity: message, letterSpacing: '0.06em'}}>
-          VIBETIP
+          {DEMO_URL}
         </div>
       </div>
     </AbsoluteFill>

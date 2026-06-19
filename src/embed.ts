@@ -4,12 +4,12 @@
  * <script src="https://unpkg.com/vibetip/dist/vibetip.iife.js"
  *   data-name="홍길동"
  *   data-message="커피 한 잔이면 충분해요"
- *   data-links="https://qr.kakaopay.com/your-code, https://github.com/sponsors/yourname"
+ *   data-links="https://qr.kakaopay.com/your-code"
  *   data-accent="#FFDD00"
  *   data-position="bottom-right"
  *   data-theme="auto"></script>
  *
- * data-links accepts a comma-separated URL list or a JSON array of TipLink objects.
+ * data-links accepts KakaoPay transfer URLs as a comma-separated list or JSON array.
  */
 import { init } from './index'
 import type { TipLink, VibeTipOptions } from './types'

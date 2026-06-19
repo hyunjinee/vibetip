@@ -2,7 +2,7 @@
 
 **바이브 코딩으로 만든 앱에 1분 만에 후원 버튼 달기.**
 
-스크립트 태그 한 줄이면 끝. 백엔드 없음, 회원가입 없음, 수수료 없음 — 방문자는 여러분이 설정한 결제 링크(카카오페이, 크티, 투네이션, GitHub Sponsors, Buy Me a Coffee...)로 바로 이동합니다.
+스크립트 태그 한 줄이면 끝. 백엔드 없음, 회원가입 없음, 수수료 없음 — 모바일에서는 카카오페이 송금 화면을 열고, PC에서는 휴대폰으로 스캔할 QR을 보여줍니다.
 
 <p align="center">
   <img src="./docs/assets/vibetip-preview.svg" width="900" alt="앱에 VibeTip 후원 패널을 띄운 모습" />
@@ -11,7 +11,7 @@
 - gzip 기준 **~10KB**, 런타임 의존성 0개, 클릭 전까지 추가 네트워크 요청 0회
 - Shadow DOM — 여러분 앱의 CSS와 절대 충돌하지 않음
 - 추적 없음, 쿠키 없음, iframe 없음, 결제 비중개 — 그냥 링크
-- 진짜 `<button>`, `aria-expanded`, Escape 닫기, 포커스 복귀, `prefers-reduced-motion` 지원 (BMC/Ko-fi 공식 위젯이 다 놓치는 것들)
+- 진짜 `<button>`, `aria-expanded`, Escape 닫기, 포커스 복귀, `prefers-reduced-motion` 지원
 
 ## 빠른 시작
 
@@ -22,11 +22,11 @@
   src="https://cdn.jsdelivr.net/npm/vibetip@0/dist/vibetip.iife.js"
   data-name="홍길동"
   data-message="이 앱이 도움이 됐다면 커피 한 잔!"
-  data-links="https://qr.kakaopay.com/your-code, https://github.com/sponsors/yourname"
+  data-links="https://qr.kakaopay.com/your-code"
 ></script>
 ```
 
-URL만 넣으면 플랫폼을 자동 감지해서 라벨과 아이콘을 붙여줍니다.
+본인의 카카오페이 송금코드 URL만 넣으면 됩니다.
 
 ### npm
 
@@ -40,11 +40,7 @@ import { init } from "vibetip";
 const tip = init({
   name: "홍길동",
   message: "이 앱이 도움이 됐다면 커피 한 잔!",
-  links: [
-    "https://qr.kakaopay.com/your-code",
-    "https://ctee.kr/place/yourname",
-    { url: "https://example.com/donate", label: "직접 후원", icon: "🎁" },
-  ],
+  links: ["https://qr.kakaopay.com/your-code"],
   accent: "#FFDD00",
   position: "bottom-right", // or 'bottom-left'
   theme: "auto", // 'light' | 'dark' | 'auto'
@@ -54,17 +50,17 @@ const tip = init({
 
 React/Next.js 사용법은 [examples/](./examples)를 보세요.
 
-## 결제 링크 선택
+## 카카오페이 송금코드 준비
 
-한국 크리에이터를 위한 플랫폼 비교, 설정 방법, 세금·법률 안내는 **[한국 크리에이터 가이드](./docs/KOREA.md)** 를 보세요.
+카카오톡에서 송금코드를 발급하고 URL을 확인하는 방법은 **[한국 크리에이터 가이드](./docs/KOREA.md)** 를 보세요.
 
-이 외 URL은 `후원하기 🙌` 커스텀 링크로 표시되며, `{ url, label, icon }`으로 직접 지정할 수도 있습니다.
+현재 VibeTip은 `qr.kakaopay.com`과 `link.kakaopay.com` 카카오페이 송금 링크만 지원합니다. 다른 URL을 전달하면 초기화 시 명확한 오류를 반환합니다.
 
 ## 옵션
 
 | 옵션           | 타입                              | 기본값           | 설명                            |
 | -------------- | --------------------------------- | ---------------- | ------------------------------- |
-| `links`        | `(string \| TipLink)[]`           | **필수**         | 결제 링크 목록                  |
+| `links`        | `(string \| TipLink)[]`           | **필수**         | 카카오페이 송금 링크 목록       |
 | `name`         | `string`                          | –                | 패널 헤더에 표시할 이름         |
 | `message`      | `string`                          | 기본 한국어 문구 | 헤더 아래 메시지                |
 | `accent`       | `string`                          | `#FFDD00`        | 플로팅 버튼 색                  |
@@ -97,7 +93,7 @@ React/Next.js 사용법은 [examples/](./examples)를 보세요.
 
 ## 철학
 
-- **결제를 중개하지 않습니다.** VibeTip은 UI일 뿐, 돈은 여러분과 결제 플랫폼 사이에서만 움직입니다. 수수료도, 규제 부담도, 서드파티 iframe도 없습니다.
+- **송금을 중개하지 않습니다.** VibeTip은 UI일 뿐, 돈은 송금자와 카카오페이 사이에서만 움직입니다. VibeTip 수수료도, 서드파티 iframe도 없습니다.
 - **바이브 코더 친화.** AI에게 "VibeTip 붙여줘"라고 하면 끝나는 수준의 단순함이 목표입니다.
 
 ## 개발 & 릴리즈

@@ -11,6 +11,8 @@ const ICON_ARROW =
   '<svg viewBox="0 0 20 20" width="16" height="16" aria-hidden="true"><path d="M6 14L14 6M8 6h6v6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>'
 const ICON_QR =
   '<svg viewBox="0 0 20 20" width="16" height="16" aria-hidden="true"><path d="M3 3h5v5H3zm9 0h5v5h-5zM3 12h5v5H3zm10 0h1v2h-2v-1m4-1h1v2h-1m-4 2h2v1h-2m4-2h1v2h-2v-1" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>'
+const ICON_KAKAOPAY =
+  '<svg viewBox="0 0 34 34" width="24" height="24" aria-hidden="true"><path d="M17 3.5C9.27 3.5 3 8.51 3 14.7c0 4 2.62 7.5 6.56 9.48l-1.4 4.2c-.17.5.4.9.82.62l5-3.35c.98.18 2 .27 3.02.27 7.73 0 14-5.02 14-11.21C31 8.5 24.73 3.5 17 3.5Z" fill="currentColor"/></svg>'
 
 function el<K extends keyof HTMLElementTagNameMap>(
   tag: K,
@@ -35,8 +37,9 @@ function isMobileDevice(): boolean {
 
 export function createWidget(options: VibeTipOptions): VibeTipInstance {
   if (!options || !Array.isArray(options.links) || options.links.length === 0) {
-    throw new Error('[vibetip] options.links must contain at least one payment link')
+    throw new Error('[vibetip] options.links must contain at least one KakaoPay transfer link')
   }
+  const links = options.links.map(resolveLink)
 
   // mount가 주어지면 인라인 카드 모드, 아니면 플로팅 버튼 모드
   const mountTarget = options.mount
@@ -135,18 +138,7 @@ export function createWidget(options: VibeTipOptions): VibeTipInstance {
   }
 
   const mobileDevice = isMobileDevice()
-  for (const raw of options.links) {
-    const link = resolveLink(raw)
-    if (link.deadNotice) {
-      // 종료된 서비스 링크: 깨진 버튼 대신 교체 안내를 보여준다
-      console.warn(`[vibetip] dead payment link (${link.url}): ${link.deadNotice}`)
-      const dead = el('div', 'vt-link vt-dead')
-      dead.appendChild(el('span', 'vt-link-emoji', '⚠️'))
-      dead.appendChild(el('span', undefined, link.deadNotice))
-      linksWrap.appendChild(dead)
-      continue
-    }
-
+  for (const link of links) {
     let paymentControl: HTMLAnchorElement | HTMLButtonElement
     const desktopKakaoPay = link.type === 'kakaopay' && !mobileDevice
     if (desktopKakaoPay) {
@@ -164,7 +156,10 @@ export function createWidget(options: VibeTipOptions): VibeTipInstance {
     }
 
     paymentControl.dataset.type = link.type
-    paymentControl.appendChild(el('span', 'vt-link-emoji', link.icon))
+    const paymentIcon = el('span', 'vt-link-emoji')
+    if (link.icon) paymentIcon.textContent = link.icon
+    else paymentIcon.innerHTML = ICON_KAKAOPAY
+    paymentControl.appendChild(paymentIcon)
     paymentControl.appendChild(el('span', 'vt-link-label', link.label))
     const arrow = el('span', 'vt-link-arrow')
     arrow.innerHTML = desktopKakaoPay ? ICON_QR : ICON_ARROW

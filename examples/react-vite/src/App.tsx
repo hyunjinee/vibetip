@@ -5,6 +5,19 @@ import './App.css'
 
 const KAKAO_PAY_URL = 'https://qr.kakaopay.com/Ej8TSKM4J'
 
+const KakaoPayMark = () => (
+  <svg
+    className="kakaopay-mark"
+    viewBox="0 0 34 34"
+    aria-hidden="true"
+  >
+    <path
+      d="M17 3.5C9.27 3.5 3 8.51 3 14.7c0 4 2.62 7.5 6.56 9.48l-1.4 4.2c-.17.5.4.9.82.62l5-3.35c.98.18 2 .27 3.02.27 7.73 0 14-5.02 14-11.21C31 8.5 24.73 3.5 17 3.5Z"
+      fill="currentColor"
+    />
+  </svg>
+)
+
 export default function App() {
   const tip = useRef<VibeTipInstance | null>(null)
 
@@ -55,7 +68,7 @@ export default function App() {
           <h2>카카오페이로 바로 송금하세요</h2>
           <p>아래 버튼을 누르면 카카오페이 송금 화면으로 이동합니다.</p>
           <a className="pay-button" href={KAKAO_PAY_URL} target="_blank" rel="noopener noreferrer">
-            <span aria-hidden="true">💛</span>
+            <KakaoPayMark />
             카카오페이로 송금
             <span className="arrow" aria-hidden="true">→</span>
           </a>

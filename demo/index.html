@@ -23,22 +23,21 @@
   <pre><code>&lt;script src="vibetip.iife.js"
   data-name="홍길동"
   data-message="이 앱이 도움이 됐다면 커피 한 잔!"
-  data-links="https://qr.kakaopay.com/your-code, https://ctee.kr/place/yourname, https://github.com/sponsors/yourname"&gt;&lt;/script&gt;</code></pre>
+  data-links="https://qr.kakaopay.com/your-code"&gt;&lt;/script&gt;</code></pre>
 
   <h2>인라인 마운트</h2>
   <p><code>mount</code> 옵션을 주면 플로팅 버튼 대신 페이지 흐름 안에 카드로 들어갑니다 (푸터, 사이드바, About 섹션 등 자유 배치):</p>
   <div id="inline-tip" style="max-width: 360px;"></div>
 
-  <!-- toss.me 링크는 의도적으로 포함: 죽은 서비스의 툼스톤 렌더링 확인용 -->
   <script src="../dist/vibetip.iife.js"
     data-name="홍길동"
     data-message="이 앱이 도움이 됐다면 커피 한 잔!"
-    data-links="https://qr.kakaopay.com/your-code, https://ctee.kr/place/yourname, https://github.com/sponsors/yourname, https://toss.me/deadlink-demo"></script>
+    data-links="https://qr.kakaopay.com/your-code"></script>
   <script>
     VibeTip.init({
       name: '홍길동',
       message: '인라인 모드 — 원하는 위치에 배치하세요.',
-      links: ['https://qr.kakaopay.com/your-code', 'https://github.com/sponsors/yourname'],
+      links: ['https://qr.kakaopay.com/your-code'],
       mount: '#inline-tip',
     })
   </script>

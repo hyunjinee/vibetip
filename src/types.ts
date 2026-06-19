@@ -1,21 +1,9 @@
-export type LinkType =
-  | 'kakaopay'
-  | 'ctee'
-  | 'toonation'
-  | 'github'
-  | 'hanzan'
-  | 'toss'
-  | 'buymeacoffee'
-  | 'kofi'
-  | 'patreon'
-  | 'stripe'
-  | 'paypal'
-  | 'custom'
+export type LinkType = 'kakaopay'
 
 export interface TipLink {
-  /** Payment/sponsor page URL the visitor will be sent to */
+  /** KakaoPay transfer URL the visitor will be sent to */
   url: string
-  /** Platform preset — controls the default label and icon. Auto-detected from the URL when omitted. */
+  /** Payment platform. VibeTip currently supports KakaoPay only. */
   type?: LinkType
   /** Override the button text */
   label?: string
@@ -28,7 +16,7 @@ export interface VibeTipOptions {
   name?: string
   /** Short message under the name, e.g. "이 앱이 마음에 들었다면 커피 한 잔!" */
   message?: string
-  /** Payment links. Strings are auto-detected; objects give full control. */
+  /** KakaoPay transfer links. Objects can override the button label and icon. */
   links: Array<string | TipLink>
   /** Accent color for the floating button. Default: #FFDD00 (coffee yellow) */
   accent?: string

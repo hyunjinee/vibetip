@@ -4,4 +4,4 @@
 
 실행: `index.html`을 브라우저에서 열거나 `bun install && bun start` (npm도 동일).
 
-`data-links`의 URL을 본인 결제 링크로 바꾸면 끝입니다.
+`data-links`의 URL을 본인 카카오페이 송금코드 링크로 바꾸면 끝입니다.

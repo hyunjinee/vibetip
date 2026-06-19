@@ -33,8 +33,6 @@ export const CSS = `
 .vt-link-label{min-width:0}
 .vt-link-arrow{flex:none;display:flex;align-items:center;justify-content:center;width:30px;height:30px;margin-left:auto;border-radius:50%;background:var(--vt-bg);color:var(--vt-text-3);transition:transform .2s ease,color .15s ease,background .2s ease}
 :is(a,button).vt-link:hover .vt-link-arrow{transform:translate(2px,-2px);background:var(--vt-accent);color:var(--vt-on-accent)}
-.vt-link.vt-dead{background:transparent;border:1.5px dashed var(--vt-line);padding:9px;color:var(--vt-text-3);font-size:12.5px;font-weight:500;line-height:1.5;cursor:default;box-shadow:none}
-.vt-dead .vt-link-emoji{background:var(--vt-card);font-size:17px}
 .vt-links[hidden],.vt-qr-view[hidden]{display:none}
 .vt-qr-view{display:flex;flex-direction:column;align-items:center;padding:0 8px 8px;text-align:center}
 .vt-qr-back{align-self:flex-start;margin:0 0 10px;padding:7px 9px;border:0;border-radius:10px;background:transparent;color:var(--vt-text-2);font:inherit;font-size:12px;font-weight:650;cursor:pointer;transition:background .15s ease,color .15s ease}

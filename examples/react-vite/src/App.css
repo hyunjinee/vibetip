@@ -153,6 +153,12 @@ a {
   font-size: 20px;
 }
 
+.kakaopay-mark {
+  width: 26px;
+  height: 26px;
+  flex: none;
+}
+
 .widget-trigger {
   margin-top: 20px;
   padding: 10px 14px;

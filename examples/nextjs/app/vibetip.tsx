@@ -9,11 +9,7 @@ export default function VibeTip() {
     const tip = init({
       name: '홍길동',
       message: '이 앱이 도움이 됐다면 커피 한 잔!',
-      links: [
-        'https://qr.kakaopay.com/your-code',
-        'https://ctee.kr/place/yourname',
-        'https://github.com/sponsors/yourname',
-      ],
+      links: ['https://qr.kakaopay.com/your-code'],
       theme: 'auto',
     })
     return () => tip.destroy()
