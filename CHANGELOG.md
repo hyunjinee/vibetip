@@ -1,5 +1,11 @@
 # vibetip
 
+## 0.4.0
+
+### Minor Changes
+
+- Add `vibetip image` CLI: generate a KakaoPay support-card image (SVG always, plus PNG when `@resvg/resvg-js` is installed) for embedding in README, Notion, blogs, and other places the widget script can't run.
+
 ## 0.3.1
 
 ### Patch Changes
