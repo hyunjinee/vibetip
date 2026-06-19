@@ -14,7 +14,7 @@ const MUTED = '#6B7684';
 const PAPER = '#F7F8FA';
 const WHITE = '#FFFFFF';
 const DARK = '#101318';
-const DEMO_URL = 'vibetip-endwaterlab.surge.sh';
+const DEMO_URL = 'vibetip-demo.vercel.app';
 const FONT =
   '-apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Pretendard Variable", Pretendard, "Noto Sans KR", sans-serif';
 

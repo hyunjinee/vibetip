@@ -5,150 +5,153 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>VibeTip 데모 — 카카오페이로 후원받기</title>
   <style>
-    :root {
-      font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", Pretendard, "Noto Sans KR", sans-serif;
-      color: #191f28;
-      background: #f4f6f8;
-      text-rendering: optimizeLegibility;
-    }
-    * { box-sizing: border-box; }
-    body {
-      min-height: 100vh;
-      margin: 0;
-      background:
-        radial-gradient(circle at 12% 8%, rgb(255 221 0 / 24%), transparent 30rem),
-        #f4f6f8;
-    }
-    button, a { font: inherit; }
-    .app-shell {
-      width: min(100% - 40px, 880px);
-      min-height: 100vh;
-      margin: 0 auto;
-      padding: 88px 0 64px;
-    }
-    .intro { max-width: 680px; }
-    .eyebrow {
-      display: inline-flex;
-      padding: 6px 10px;
-      border-radius: 999px;
-      background: #ffdd00;
-      font-size: 12px;
-      font-weight: 800;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-    }
-    .intro h1 {
-      margin: 20px 0 14px;
-      font-size: clamp(38px, 6vw, 64px);
-      line-height: 1.14;
-      letter-spacing: -0.045em;
-    }
-    .intro h1 span {
-      text-decoration: underline;
-      text-decoration-color: #ffdd00;
-      text-decoration-thickness: 0.22em;
-      text-underline-offset: -0.08em;
-      text-decoration-skip-ink: none;
-    }
-    .intro p { margin: 0; color: #4e5968; font-size: 18px; }
-    .support-card {
-      margin-top: 48px;
-      padding: 20px;
-      border: 1px solid rgb(2 32 71 / 8%);
-      border-radius: 32px;
-      background: rgb(255 255 255 / 88%);
-      box-shadow: 0 24px 70px rgb(25 31 40 / 12%);
-      backdrop-filter: blur(18px);
-    }
-    .desktop-qr {
-      display: grid;
-      grid-template-columns: auto 1fr;
-      align-items: center;
-      gap: 36px;
-    }
-    .qr-frame {
-      display: grid;
-      place-items: center;
-      padding: 14px;
-      border: 1px solid rgb(2 32 71 / 8%);
-      border-radius: 24px;
-      background: #fff;
-      box-shadow: 0 10px 30px rgb(25 31 40 / 8%);
-    }
-    .qr-frame svg { display: block; width: 208px; height: 208px; }
-    .device-badge {
-      display: inline-flex;
-      margin-bottom: 12px;
-      padding: 5px 9px;
-      border-radius: 8px;
-      background: #f2f4f6;
-      color: #4e5968;
-      font-size: 12px;
-      font-weight: 700;
-    }
-    .qr-copy h2, .mobile-pay h2 {
-      margin: 0;
-      font-size: 26px;
-      line-height: 1.3;
-      letter-spacing: -0.035em;
-    }
-    .qr-copy p, .mobile-pay p {
-      max-width: 390px;
-      margin: 12px 0 0;
-      color: #6b7684;
-      font-size: 15px;
-      line-height: 1.65;
-      word-break: keep-all;
-    }
-    .mobile-pay { display: none; }
-    .pay-button {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      min-height: 58px;
-      margin-top: 24px;
-      padding: 0 20px;
-      border-radius: 18px;
-      background: #ffdd00;
-      color: #191f28;
-      font-weight: 800;
-      text-decoration: none;
-      box-shadow: 0 10px 24px rgb(255 221 0 / 28%);
-    }
-    .pay-button .arrow { margin-left: auto; font-size: 20px; }
-    .kakaopay-mark { width: 26px; height: 26px; flex: none; }
-    .widget-trigger {
-      margin-top: 20px;
-      padding: 10px 14px;
-      border: 0;
-      border-radius: 12px;
-      background: transparent;
-      color: #8b95a1;
-      font-size: 13px;
-      cursor: pointer;
-    }
-    .widget-trigger:hover { background: rgb(25 31 40 / 5%); color: #4e5968; }
-    @media (max-width: 640px) {
-      body {
-        background:
-          radial-gradient(circle at 20% 0%, rgb(255 221 0 / 30%), transparent 24rem),
-          #f4f6f8;
-      }
-      .app-shell { width: min(100% - 32px, 480px); padding: 56px 0 108px; }
-      .intro h1 { margin-top: 16px; font-size: clamp(34px, 11vw, 48px); }
-      .intro p { font-size: 16px; line-height: 1.65; }
-      .support-card { margin-top: 36px; padding: 24px; border-radius: 26px; }
-      .desktop-qr { display: none; }
-      .mobile-pay { display: block; }
-      .mobile-pay h2 { font-size: 24px; }
-      .widget-trigger { display: block; margin: 16px auto 0; }
-    }
-    @media (prefers-reduced-motion: no-preference) {
-      .pay-button, .widget-trigger {
-        transition: transform 160ms ease, box-shadow 160ms ease, background 160ms ease, color 160ms ease;
-      }
-      .pay-button:hover { transform: translateY(-2px); box-shadow: 0 14px 30px rgb(255 221 0 / 36%); }
-    }
+:root {
+  font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", Pretendard, "Noto Sans KR", sans-serif;
+  color: #191f28;
+  background: #f4f6f8;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  min-width: 320px;
+  min-height: 100vh;
+  margin: 0;
+  background:
+    radial-gradient(circle at 12% 8%, rgb(255 221 0 / 24%), transparent 30rem),
+    #f4f6f8;
+}
+
+button,
+a {
+  font: inherit;
+}
+
+.app-shell {
+  width: min(100% - 40px, 760px);
+  min-height: 100vh;
+  margin: 0 auto;
+  padding: 96px 0 72px;
+  text-align: center;
+}
+
+.intro {
+  max-width: 640px;
+  margin: 0 auto;
+}
+
+.eyebrow {
+  display: inline-flex;
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: #ffdd00;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.intro h1 {
+  margin: 20px 0 14px;
+  font-size: clamp(38px, 6vw, 64px);
+  line-height: 1.14;
+  letter-spacing: -0.045em;
+}
+
+.intro h1 span {
+  text-decoration: underline;
+  text-decoration-color: #ffdd00;
+  text-decoration-thickness: 0.22em;
+  text-underline-offset: -0.08em;
+  text-decoration-skip-ink: none;
+}
+
+.intro p {
+  margin: 0;
+  color: #4e5968;
+  font-size: 18px;
+}
+
+.cta-wrap {
+  display: grid;
+  place-items: center;
+  gap: 14px;
+  margin-top: 56px;
+}
+
+.open-panel {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 62px;
+  padding: 0 34px;
+  border: 0;
+  border-radius: 18px;
+  background: #ffdd00;
+  color: #191f28;
+  font-size: 18px;
+  font-weight: 800;
+  cursor: pointer;
+  box-shadow: 0 12px 30px rgb(255 221 0 / 36%);
+}
+
+.kakaopay-mark {
+  width: 26px;
+  height: 26px;
+  flex: none;
+}
+
+.cta-hint {
+  margin: 0;
+  color: #8b95a1;
+  font-size: 14px;
+}
+
+@media (max-width: 640px) {
+  body {
+    background:
+      radial-gradient(circle at 20% 0%, rgb(255 221 0 / 30%), transparent 24rem),
+      #f4f6f8;
+  }
+
+  .app-shell {
+    width: min(100% - 32px, 480px);
+    padding: 64px 0 96px;
+  }
+
+  .intro h1 {
+    margin-top: 16px;
+    font-size: clamp(34px, 11vw, 48px);
+  }
+
+  .intro p {
+    font-size: 16px;
+    line-height: 1.65;
+  }
+
+  .cta-wrap {
+    margin-top: 44px;
+  }
+
+  .open-panel {
+    width: 100%;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .open-panel {
+    transition: transform 160ms ease, box-shadow 160ms ease;
+  }
+
+  .open-panel:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 16px 38px rgb(255 221 0 / 44%);
+  }
+}
   </style>
 </head>
 <body>
@@ -159,49 +162,30 @@
       <p>카카오페이로 간단하고 안전하게 응원할 수 있어요.</p>
     </section>
 
-    <section class="support-card" aria-label="카카오페이 송금 안내">
-      <div class="desktop-qr">
-        <div class="qr-frame">
-          <!-- https://qr.kakaopay.com/Ej8TSKM4J 용 QR. 본인 송금코드로 바꾸면 새 QR을 생성하세요. -->
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="-2 -2 33 33" width="208" height="208" shape-rendering="crispEdges" role="img" aria-label="카카오페이 송금 QR코드"><rect x="-2" y="-2" width="33" height="33" fill="#fff"/><path d="M0 0h1v1h-1zM1 0h1v1h-1zM2 0h1v1h-1zM3 0h1v1h-1zM4 0h1v1h-1zM5 0h1v1h-1zM6 0h1v1h-1zM8 0h1v1h-1zM9 0h1v1h-1zM11 0h1v1h-1zM12 0h1v1h-1zM15 0h1v1h-1zM16 0h1v1h-1zM17 0h1v1h-1zM19 0h1v1h-1zM20 0h1v1h-1zM22 0h1v1h-1zM23 0h1v1h-1zM24 0h1v1h-1zM25 0h1v1h-1zM26 0h1v1h-1zM27 0h1v1h-1zM28 0h1v1h-1zM0 1h1v1h-1zM6 1h1v1h-1zM8 1h1v1h-1zM9 1h1v1h-1zM10 1h1v1h-1zM11 1h1v1h-1zM13 1h1v1h-1zM16 1h1v1h-1zM18 1h1v1h-1zM19 1h1v1h-1zM22 1h1v1h-1zM28 1h1v1h-1zM0 2h1v1h-1zM2 2h1v1h-1zM3 2h1v1h-1zM4 2h1v1h-1zM6 2h1v1h-1zM8 2h1v1h-1zM10 2h1v1h-1zM12 2h1v1h-1zM13 2h1v1h-1zM14 2h1v1h-1zM16 2h1v1h-1zM18 2h1v1h-1zM20 2h1v1h-1zM22 2h1v1h-1zM24 2h1v1h-1zM25 2h1v1h-1zM26 2h1v1h-1zM28 2h1v1h-1zM0 3h1v1h-1zM2 3h1v1h-1zM3 3h1v1h-1zM4 3h1v1h-1zM6 3h1v1h-1zM8 3h1v1h-1zM13 3h1v1h-1zM15 3h1v1h-1zM16 3h1v1h-1zM18 3h1v1h-1zM19 3h1v1h-1zM22 3h1v1h-1zM24 3h1v1h-1zM25 3h1v1h-1zM26 3h1v1h-1zM28 3h1v1h-1zM0 4h1v1h-1zM2 4h1v1h-1zM3 4h1v1h-1zM4 4h1v1h-1zM6 4h1v1h-1zM8 4h1v1h-1zM10 4h1v1h-1zM11 4h1v1h-1zM12 4h1v1h-1zM16 4h1v1h-1zM17 4h1v1h-1zM18 4h1v1h-1zM19 4h1v1h-1zM20 4h1v1h-1zM22 4h1v1h-1zM24 4h1v1h-1zM25 4h1v1h-1zM26 4h1v1h-1zM28 4h1v1h-1zM0 5h1v1h-1zM6 5h1v1h-1zM10 5h1v1h-1zM11 5h1v1h-1zM12 5h1v1h-1zM13 5h1v1h-1zM14 5h1v1h-1zM15 5h1v1h-1zM17 5h1v1h-1zM19 5h1v1h-1zM22 5h1v1h-1zM28 5h1v1h-1zM0 6h1v1h-1zM1 6h1v1h-1zM2 6h1v1h-1zM3 6h1v1h-1zM4 6h1v1h-1zM5 6h1v1h-1zM6 6h1v1h-1zM8 6h1v1h-1zM10 6h1v1h-1zM12 6h1v1h-1zM14 6h1v1h-1zM16 6h1v1h-1zM18 6h1v1h-1zM20 6h1v1h-1zM22 6h1v1h-1zM23 6h1v1h-1zM24 6h1v1h-1zM25 6h1v1h-1zM26 6h1v1h-1zM27 6h1v1h-1zM28 6h1v1h-1zM8 7h1v1h-1zM11 7h1v1h-1zM12 7h1v1h-1zM13 7h1v1h-1zM16 7h1v1h-1zM18 7h1v1h-1zM1 8h1v1h-1zM2 8h1v1h-1zM4 8h1v1h-1zM6 8h1v1h-1zM7 8h1v1h-1zM15 8h1v1h-1zM16 8h1v1h-1zM18 8h1v1h-1zM20 8h1v1h-1zM22 8h1v1h-1zM24 8h1v1h-1zM25 8h1v1h-1zM26 8h1v1h-1zM27 8h1v1h-1zM28 8h1v1h-1zM1 9h1v1h-1zM2 9h1v1h-1zM3 9h1v1h-1zM4 9h1v1h-1zM5 9h1v1h-1zM7 9h1v1h-1zM10 9h1v1h-1zM11 9h1v1h-1zM12 9h1v1h-1zM14 9h1v1h-1zM15 9h1v1h-1zM21 9h1v1h-1zM22 9h1v1h-1zM25 9h1v1h-1zM28 9h1v1h-1zM0 10h1v1h-1zM2 10h1v1h-1zM6 10h1v1h-1zM7 10h1v1h-1zM8 10h1v1h-1zM10 10h1v1h-1zM14 10h1v1h-1zM15 10h1v1h-1zM17 10h1v1h-1zM18 10h1v1h-1zM20 10h1v1h-1zM23 10h1v1h-1zM25 10h1v1h-1zM26 10h1v1h-1zM27 10h1v1h-1zM28 10h1v1h-1zM0 11h1v1h-1zM1 11h1v1h-1zM4 11h1v1h-1zM7 11h1v1h-1zM8 11h1v1h-1zM10 11h1v1h-1zM11 11h1v1h-1zM12 11h1v1h-1zM13 11h1v1h-1zM15 11h1v1h-1zM16 11h1v1h-1zM17 11h1v1h-1zM18 11h1v1h-1zM21 11h1v1h-1zM22 11h1v1h-1zM24 11h1v1h-1zM27 11h1v1h-1zM2 12h1v1h-1zM5 12h1v1h-1zM6 12h1v1h-1zM7 12h1v1h-1zM10 12h1v1h-1zM14 12h1v1h-1zM15 12h1v1h-1zM16 12h1v1h-1zM17 12h1v1h-1zM19 12h1v1h-1zM22 12h1v1h-1zM23 12h1v1h-1zM25 12h1v1h-1zM1 13h1v1h-1zM2 13h1v1h-1zM3 13h1v1h-1zM5 13h1v1h-1zM9 13h1v1h-1zM15 13h1v1h-1zM17 13h1v1h-1zM20 13h1v1h-1zM21 13h1v1h-1zM22 13h1v1h-1zM23 13h1v1h-1zM27 13h1v1h-1zM28 13h1v1h-1zM1 14h1v1h-1zM2 14h1v1h-1zM3 14h1v1h-1zM4 14h1v1h-1zM5 14h1v1h-1zM6 14h1v1h-1zM7 14h1v1h-1zM11 14h1v1h-1zM15 14h1v1h-1zM16 14h1v1h-1zM21 14h1v1h-1zM23 14h1v1h-1zM26 14h1v1h-1zM27 14h1v1h-1zM28 14h1v1h-1zM0 15h1v1h-1zM1 15h1v1h-1zM4 15h1v1h-1zM5 15h1v1h-1zM7 15h1v1h-1zM9 15h1v1h-1zM10 15h1v1h-1zM11 15h1v1h-1zM12 15h1v1h-1zM13 15h1v1h-1zM16 15h1v1h-1zM18 15h1v1h-1zM19 15h1v1h-1zM23 15h1v1h-1zM27 15h1v1h-1zM4 16h1v1h-1zM5 16h1v1h-1zM6 16h1v1h-1zM11 16h1v1h-1zM14 16h1v1h-1zM17 16h1v1h-1zM18 16h1v1h-1zM20 16h1v1h-1zM22 16h1v1h-1zM25 16h1v1h-1zM28 16h1v1h-1zM2 17h1v1h-1zM4 17h1v1h-1zM7 17h1v1h-1zM12 17h1v1h-1zM13 17h1v1h-1zM17 17h1v1h-1zM20 17h1v1h-1zM21 17h1v1h-1zM22 17h1v1h-1zM25 17h1v1h-1zM26 17h1v1h-1zM27 17h1v1h-1zM28 17h1v1h-1zM0 18h1v1h-1zM2 18h1v1h-1zM5 18h1v1h-1zM6 18h1v1h-1zM7 18h1v1h-1zM8 18h1v1h-1zM9 18h1v1h-1zM11 18h1v1h-1zM13 18h1v1h-1zM18 18h1v1h-1zM21 18h1v1h-1zM23 18h1v1h-1zM25 18h1v1h-1zM26 18h1v1h-1zM27 18h1v1h-1zM28 18h1v1h-1zM1 19h1v1h-1zM4 19h1v1h-1zM5 19h1v1h-1zM8 19h1v1h-1zM9 19h1v1h-1zM10 19h1v1h-1zM13 19h1v1h-1zM14 19h1v1h-1zM15 19h1v1h-1zM17 19h1v1h-1zM18 19h1v1h-1zM19 19h1v1h-1zM20 19h1v1h-1zM22 19h1v1h-1zM23 19h1v1h-1zM25 19h1v1h-1zM27 19h1v1h-1zM28 19h1v1h-1zM0 20h1v1h-1zM2 20h1v1h-1zM3 20h1v1h-1zM5 20h1v1h-1zM6 20h1v1h-1zM9 20h1v1h-1zM10 20h1v1h-1zM12 20h1v1h-1zM14 20h1v1h-1zM15 20h1v1h-1zM16 20h1v1h-1zM17 20h1v1h-1zM20 20h1v1h-1zM21 20h1v1h-1zM22 20h1v1h-1zM23 20h1v1h-1zM24 20h1v1h-1zM8 21h1v1h-1zM10 21h1v1h-1zM11 21h1v1h-1zM13 21h1v1h-1zM14 21h1v1h-1zM16 21h1v1h-1zM17 21h1v1h-1zM20 21h1v1h-1zM24 21h1v1h-1zM28 21h1v1h-1zM0 22h1v1h-1zM1 22h1v1h-1zM2 22h1v1h-1zM3 22h1v1h-1zM4 22h1v1h-1zM5 22h1v1h-1zM6 22h1v1h-1zM8 22h1v1h-1zM10 22h1v1h-1zM12 22h1v1h-1zM13 22h1v1h-1zM14 22h1v1h-1zM18 22h1v1h-1zM19 22h1v1h-1zM20 22h1v1h-1zM22 22h1v1h-1zM24 22h1v1h-1zM26 22h1v1h-1zM27 22h1v1h-1zM28 22h1v1h-1zM0 23h1v1h-1zM6 23h1v1h-1zM9 23h1v1h-1zM10 23h1v1h-1zM12 23h1v1h-1zM13 23h1v1h-1zM15 23h1v1h-1zM17 23h1v1h-1zM20 23h1v1h-1zM24 23h1v1h-1zM28 23h1v1h-1zM0 24h1v1h-1zM2 24h1v1h-1zM3 24h1v1h-1zM4 24h1v1h-1zM6 24h1v1h-1zM8 24h1v1h-1zM12 24h1v1h-1zM14 24h1v1h-1zM16 24h1v1h-1zM18 24h1v1h-1zM20 24h1v1h-1zM21 24h1v1h-1zM22 24h1v1h-1zM23 24h1v1h-1zM24 24h1v1h-1zM25 24h1v1h-1zM27 24h1v1h-1zM0 25h1v1h-1zM2 25h1v1h-1zM3 25h1v1h-1zM4 25h1v1h-1zM6 25h1v1h-1zM9 25h1v1h-1zM10 25h1v1h-1zM15 25h1v1h-1zM20 25h1v1h-1zM21 25h1v1h-1zM24 25h1v1h-1zM26 25h1v1h-1zM0 26h1v1h-1zM2 26h1v1h-1zM3 26h1v1h-1zM4 26h1v1h-1zM6 26h1v1h-1zM8 26h1v1h-1zM10 26h1v1h-1zM11 26h1v1h-1zM12 26h1v1h-1zM14 26h1v1h-1zM15 26h1v1h-1zM17 26h1v1h-1zM18 26h1v1h-1zM19 26h1v1h-1zM23 26h1v1h-1zM24 26h1v1h-1zM28 26h1v1h-1zM0 27h1v1h-1zM6 27h1v1h-1zM8 27h1v1h-1zM9 27h1v1h-1zM11 27h1v1h-1zM13 27h1v1h-1zM16 27h1v1h-1zM17 27h1v1h-1zM18 27h1v1h-1zM19 27h1v1h-1zM22 27h1v1h-1zM23 27h1v1h-1zM27 27h1v1h-1zM0 28h1v1h-1zM1 28h1v1h-1zM2 28h1v1h-1zM3 28h1v1h-1zM4 28h1v1h-1zM5 28h1v1h-1zM6 28h1v1h-1zM9 28h1v1h-1zM10 28h1v1h-1zM11 28h1v1h-1zM12 28h1v1h-1zM14 28h1v1h-1zM15 28h1v1h-1zM16 28h1v1h-1zM17 28h1v1h-1zM19 28h1v1h-1zM20 28h1v1h-1zM21 28h1v1h-1zM24 28h1v1h-1zM27 28h1v1h-1zM28 28h1v1h-1z" fill="#111111"/></svg>
-        </div>
-        <div class="qr-copy">
-          <span class="device-badge">PC에서 접속했나요?</span>
-          <h2>휴대폰으로 QR을 스캔하세요</h2>
-          <p>기본 카메라나 카카오톡 코드스캔으로 찍으면 카카오페이 송금 화면이 열립니다.</p>
-        </div>
-      </div>
-
-      <div class="mobile-pay">
-        <span class="device-badge">모바일에서 접속했나요?</span>
-        <h2>카카오페이로 바로 송금하세요</h2>
-        <p>아래 버튼을 누르면 카카오페이 송금 화면으로 이동합니다.</p>
-        <a class="pay-button" href="https://qr.kakaopay.com/Ej8TSKM4J" target="_blank" rel="noopener noreferrer">
-          <svg class="kakaopay-mark" viewBox="0 0 34 34" aria-hidden="true"><path d="M17 3.5C9.27 3.5 3 8.51 3 14.7c0 4 2.62 7.5 6.56 9.48l-1.4 4.2c-.17.5.4.9.82.62l5-3.35c.98.18 2 .27 3.02.27 7.73 0 14-5.02 14-11.21C31 8.5 24.73 3.5 17 3.5Z" fill="currentColor"/></svg>
-          카카오페이로 송금
-          <span class="arrow" aria-hidden="true">→</span>
-        </a>
-      </div>
-    </section>
-
-    <button class="widget-trigger" id="open-tip">VibeTip 패널 열기</button>
+    <div class="cta-wrap">
+      <button class="open-panel" id="open-tip">
+        <svg class="kakaopay-mark" viewBox="0 0 34 34" aria-hidden="true"><path d="M17 3.5C9.27 3.5 3 8.51 3 14.7c0 4 2.62 7.5 6.56 9.48l-1.4 4.2c-.17.5.4.9.82.62l5-3.35c.98.18 2 .27 3.02.27 7.73 0 14-5.02 14-11.21C31 8.5 24.73 3.5 17 3.5Z" fill="currentColor"/></svg>
+        VibeTip 패널 열기
+      </button>
+      <p class="cta-hint">PC에서는 QR, 모바일에서는 카카오페이 송금 화면이 열립니다.</p>
+    </div>
   </main>
 
-  <!-- 위젯 본체. 로컬에서는 `bun run build` 후 ../dist 가 생깁니다. 실제 사이트에선 CDN(https://cdn.jsdelivr.net/npm/vibetip@0/dist/vibetip.iife.js)을 쓰세요. -->
+  <!-- 로컬에서는 `bun run build` 후 ../dist 가 생깁니다. 실제 사이트에선 CDN(https://cdn.jsdelivr.net/npm/vibetip@0/dist/vibetip.iife.js)을 쓰세요. -->
   <script src="../dist/vibetip.iife.js"></script>
   <script>
     const tip = VibeTip.init({
-      name: 'VibeTip',
-      message: '모바일에서는 바로 송금하고, PC에서는 화면의 QR을 스캔해 주세요.',
-      links: ['https://qr.kakaopay.com/Ej8TSKM4J'], // ← 본인 카카오페이 송금코드 URL로 바꾸세요
-      accent: '#FFDD00',
-      position: 'bottom-right',
-      theme: 'auto',
-    })
-    document.getElementById('open-tip').addEventListener('click', (e) => {
-      e.stopPropagation()
-      tip.open()
-    })
+      name: "VibeTip",
+      message: "모바일에서는 바로 송금하고, PC에서는 화면의 QR을 스캔해 주세요.",
+      links: ["https://qr.kakaopay.com/Ej8TSKM4J"], // ← 본인 카카오페이 송금코드 URL로 바꾸세요
+      accent: "#FFDD00",
+      position: "bottom-right",
+      theme: "auto",
+    });
+    document.getElementById("open-tip").addEventListener("click", function (e) {
+      e.stopPropagation();
+      tip.open();
+    });
   </script>
 </body>
 </html>

@@ -2,7 +2,7 @@
 
 **바이브 코딩으로 만든 앱에 1분 만에 후원 버튼 달기.**
 
-스크립트 태그 한 줄이면 끝. 백엔드 없음, 회원가입 없음, 수수료 없음 — 모바일에서는 카카오페이 송금 화면을 열고, PC에서는 휴대폰으로 스캔할 QR을 보여줍니다.
+모바일에서는 카카오페이 송금 화면을 열고, PC에서는 휴대폰으로 스캔할 QR을 보여줍니다.
 
 <p align="center">
   <img src="./docs/assets/vibetip-preview.svg" width="900" alt="앱에 VibeTip 후원 패널을 띄운 모습" />
@@ -11,11 +11,6 @@
 <p align="center">
   <a href="https://vibetip-demo.vercel.app/"><strong>▶ 라이브 데모</strong></a> — PC에서는 QR, 모바일에서는 카카오페이 송금 화면이 열립니다.
 </p>
-
-- gzip 기준 **~10KB**, 런타임 의존성 0개, 클릭 전까지 추가 네트워크 요청 0회
-- Shadow DOM — 여러분 앱의 CSS와 절대 충돌하지 않음
-- 추적 없음, 쿠키 없음, iframe 없음, 결제 비중개 — 그냥 링크
-- 진짜 `<button>`, `aria-expanded`, Escape 닫기, 포커스 복귀, `prefers-reduced-motion` 지원
 
 ## 빠른 시작
 
@@ -100,6 +95,13 @@ React/Next.js 사용법은 [examples/](./examples)를 보세요.
 - [`vanilla/`](./examples/vanilla) — 스크립트 태그 한 줄, 빌드 없음
 - [`react-vite/`](./examples/react-vite) — React `useEffect` 마운트/언마운트 패턴
 - [`nextjs/`](./examples/nextjs) — App Router `'use client'` SSR-안전 패턴
+
+## 특징
+
+- gzip 기준 **~10KB**, 런타임 의존성 0개, 클릭 전까지 추가 네트워크 요청 0회
+- Shadow DOM — 여러분 앱의 CSS와 절대 충돌하지 않음
+- 추적 없음, 쿠키 없음, iframe 없음, 결제 비중개 — 그냥 링크
+- 진짜 `<button>`, `aria-expanded`, Escape 닫기, 포커스 복귀, `prefers-reduced-motion` 지원
 
 ## 철학
 
