@@ -4,14 +4,18 @@
 
 스크립트 태그 한 줄이면 끝. 백엔드 없음, 회원가입 없음, 수수료 없음 — 방문자는 여러분이 설정한 결제 링크(카카오페이, 크티, 투네이션, GitHub Sponsors, Buy Me a Coffee...)로 바로 이동합니다.
 
-- gzip 기준 **~3KB**, 의존성 0개, 클릭 전까지 추가 네트워크 요청 0회
+<p align="center">
+  <img src="./docs/assets/vibetip-preview.svg" width="900" alt="앱에 VibeTip 후원 패널을 띄운 모습" />
+</p>
+
+- gzip 기준 **~6KB**, 의존성 0개, 클릭 전까지 추가 네트워크 요청 0회
 - Shadow DOM — 여러분 앱의 CSS와 절대 충돌하지 않음
 - 추적 없음, 쿠키 없음, iframe 없음, 결제 비중개 — 그냥 링크
 - 진짜 `<button>`, `aria-expanded`, Escape 닫기, 포커스 복귀, `prefers-reduced-motion` 지원 (BMC/Ko-fi 공식 위젯이 다 놓치는 것들)
 
 ## 빠른 시작
 
-### 스크립트 태그 (가장 쉬움)
+### 스크립트 태그
 
 ```html
 <script

@@ -5,10 +5,8 @@ import type { VibeTipInstance, VibeTipOptions } from './types'
 const DEFAULT_ACCENT = '#FFDD00'
 const REPO_URL = 'https://github.com/hyunjinee/vibetip'
 
-// 이모지 대신 inline SVG — OS별 렌더링 차이가 없고 currentColor로 accent에 자동 대응.
-// 열림 상태의 ✕ 전환은 CSS(.vt-fab::after)가 처리한다.
-const ICON_SPARK =
-  '<svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path fill="currentColor" d="M12 2l2.6 6.9L22 12l-7.4 3.1L12 22l-2.6-6.9L2 12l7.4-3.1z"/></svg>'
+const ICON_ARROW =
+  '<svg viewBox="0 0 20 20" width="16" height="16" aria-hidden="true"><path d="M6 14L14 6M8 6h6v6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>'
 
 function el<K extends keyof HTMLElementTagNameMap>(
   tag: K,
@@ -73,10 +71,15 @@ export function createWidget(options: VibeTipOptions): VibeTipInstance {
     panel.appendChild(closeBtn)
   }
 
-  if (options.name) panel.appendChild(el('div', 'vt-name', options.name))
-  panel.appendChild(
+  const header = el('div', 'vt-header')
+  const heading = el('div', 'vt-heading')
+  heading.appendChild(el('div', 'vt-eyebrow', 'VibeTip'))
+  if (options.name) heading.appendChild(el('div', 'vt-name', options.name))
+  heading.appendChild(
     el('div', 'vt-message', options.message ?? '이 프로젝트가 마음에 드셨다면 후원해 주세요!'),
   )
+  header.appendChild(heading)
+  panel.appendChild(header)
 
   const linksWrap = el('div', 'vt-links')
   for (const raw of options.links) {
@@ -94,9 +97,12 @@ export function createWidget(options: VibeTipOptions): VibeTipInstance {
     a.href = link.url
     a.target = '_blank'
     a.rel = 'noopener noreferrer'
+    a.dataset.type = link.type
     a.appendChild(el('span', 'vt-link-emoji', link.icon))
-    a.appendChild(el('span', undefined, link.label))
-    a.appendChild(el('span', 'vt-link-arrow', '↗'))
+    a.appendChild(el('span', 'vt-link-label', link.label))
+    const arrow = el('span', 'vt-link-arrow')
+    arrow.innerHTML = ICON_ARROW
+    a.appendChild(arrow)
     linksWrap.appendChild(a)
   }
   panel.appendChild(linksWrap)
@@ -114,13 +120,9 @@ export function createWidget(options: VibeTipOptions): VibeTipInstance {
 
   // Floating button (floating 모드 전용)
   let fab: HTMLButtonElement | null = null
-  let fabEmoji: HTMLSpanElement | null = null
   if (!inline) {
     fab = el('button', 'vt-fab')
     fab.setAttribute('aria-haspopup', 'dialog')
-    fabEmoji = el('span', 'vt-fab-emoji')
-    fabEmoji.innerHTML = ICON_SPARK
-    fab.appendChild(fabEmoji)
     const buttonLabel = options.buttonLabel ?? 'Tip'
     if (buttonLabel) {
       fab.appendChild(el('span', 'vt-fab-label', buttonLabel))
