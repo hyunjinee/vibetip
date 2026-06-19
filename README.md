@@ -88,6 +88,22 @@ React/Next.js 사용법은 [examples/](./examples)를 보세요.
 
 스크립트 태그 자동 초기화에서는 `data-mount="#tip-here"` 속성으로 동일하게 동작합니다.
 
+## 이미지로 내보내기
+
+위젯은 자바스크립트가 도는 페이지에서만 뜹니다. GitHub README·Notion·블로그처럼
+스크립트를 못 붙이는 곳에는 **후원 카드 이미지**를 만들어 붙이세요.
+
+```bash
+npx vibetip image --link https://qr.kakaopay.com/your-code --name 홍길동 --out tip
+```
+
+- `tip.svg`가 생성됩니다 (의존성 없이 항상).
+- `@resvg/resvg-js`가 설치돼 있으면 `tip.png`도 함께 생성됩니다
+  (`npm i -D @resvg/resvg-js`). Notion 등 SVG가 안 보이는 곳엔 PNG를 쓰세요.
+
+옵션: `--message`, `--label`, `--accent`, `--theme light|dark`. 자세한 건
+`npx vibetip image --help`.
+
 ## Examples
 
 [`examples/`](./examples)에 복사해서 바로 쓸 수 있는 예제가 있습니다:
