@@ -8,6 +8,10 @@
   <img src="./docs/assets/vibetip-preview.svg" width="900" alt="앱에 VibeTip 후원 패널을 띄운 모습" />
 </p>
 
+<p align="center">
+  <a href="https://vibetip-endwaterlab.surge.sh/"><strong>▶ 라이브 데모</strong></a> — PC에서는 QR, 모바일에서는 카카오페이 송금 화면이 열립니다.
+</p>
+
 - gzip 기준 **~10KB**, 런타임 의존성 0개, 클릭 전까지 추가 네트워크 요청 0회
 - Shadow DOM — 여러분 앱의 CSS와 절대 충돌하지 않음
 - 추적 없음, 쿠키 없음, iframe 없음, 결제 비중개 — 그냥 링크
