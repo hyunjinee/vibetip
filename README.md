@@ -74,6 +74,7 @@ React/Next.js 사용법은 [examples/](./examples)를 보세요.
 | `theme`        | `'light' \| 'dark' \| 'auto'`     | `auto`           | 패널 색상 모드                  |
 | `buttonLabel`  | `string`                          | `Tip`            | 버튼 텍스트 (`''`이면 아이콘만) |
 | `hideBranding` | `boolean`                         | `false`          | Powered by 푸터 숨김            |
+| `tokens`       | `Record<string, string>`          | –                | 디자인 토큰(CSS 변수) 오버라이드. [스타일 커스터마이징](#스타일-커스터마이징) 참고 |
 
 `init()`은 `{ open, close, destroy }`를 반환합니다. SPA에서는 언마운트 시 `destroy()`를 호출하세요.
 
@@ -87,6 +88,83 @@ React/Next.js 사용법은 [examples/](./examples)를 보세요.
 ```
 
 스크립트 태그 자동 초기화에서는 `data-mount="#tip-here"` 속성으로 동일하게 동작합니다.
+
+## 스타일 커스터마이징
+
+위젯은 Shadow DOM으로 격리돼 **여러분 앱의 CSS와 절대 충돌하지 않습니다.** 격리는 한 방향이라, 아래 채널로 *원하는 부분만* 안전하게 덮어쓸 수 있습니다 (앱의 전역 CSS는 여전히 새어 들어오지 않습니다).
+
+### 1) 토큰 — `options.tokens` (가장 확실, 추천)
+
+호스트에 인라인으로 적용돼 **테마와 무관하게 항상 우선**합니다.
+
+```ts
+init({
+  links: ["https://qr.kakaopay.com/your-code"],
+  tokens: { "--vt-bg": "#0B0B0C", "--vt-card": "#1A1A1D", "--vt-radius": "14px" },
+});
+```
+
+스크립트 태그에서는 `data-tokens`(JSON):
+
+```html
+<script
+  src="https://cdn.jsdelivr.net/npm/vibetip@0/dist/vibetip.iife.js"
+  data-links="https://qr.kakaopay.com/your-code"
+  data-tokens='{"--vt-bg":"#0B0B0C","--vt-radius":"14px"}'
+></script>
+```
+
+공개 토큰 (semver 계약):
+
+| 토큰            | 기본 (light / dark)     | 의미                |
+| --------------- | ----------------------- | ------------------- |
+| `--vt-accent`   | `#FFDD00`               | 강조색 (버튼)       |
+| `--vt-on-accent`| `#191F28`               | 강조색 위 텍스트    |
+| `--vt-bg`       | `#F7F8FA` / `#202228`   | 패널 배경           |
+| `--vt-card`     | `#fff` / `#292C34`      | 링크/카드 표면      |
+| `--vt-text`     | `#191F28` / `#F2F4F6`   | 1차 텍스트          |
+| `--vt-text-2`   | `#4E5968` / `#B0B8C1`   | 2차 텍스트          |
+| `--vt-text-3`   | `#8B95A1` / `#7D8692`   | 3차 텍스트          |
+| `--vt-line`     | `#02204714` / `#FFFFFF14` | 테두리            |
+| `--vt-ring`     | `#3182F6` / `#4D9DFF`   | 포커스 링           |
+| `--vt-radius`   | `28px`                  | 패널 모서리 반경    |
+
+### 2) 토큰 — 순수 CSS
+
+빌드 없이도 됩니다. 위젯 호스트 선택자는 `[data-vibetip-widget]`:
+
+```css
+[data-vibetip-widget] {
+  --vt-bg: #0b0b0c;
+  --vt-radius: 14px;
+}
+/* 다크 값만 따로 바꾸려면 테마 선택자로 명시도를 맞추세요 */
+[data-vibetip-widget][data-theme="dark"] {
+  --vt-bg: #000;
+}
+```
+
+### 3) 구조 변경 — `::part()`
+
+토큰으로 못 바꾸는 모양(테두리·그림자·레이아웃 등)은 파트로. 노출된 파트는 `fab`, `panel`, `link`, `close` 4개입니다.
+
+```css
+[data-vibetip-widget]::part(fab) {
+  border-radius: 8px;
+}
+[data-vibetip-widget]::part(panel) {
+  box-shadow: none;
+}
+```
+
+### 4) 이스케이프 해치 (비공식)
+
+정 안 되면 `shadowRoot`가 `open`이라 직접 스타일도 가능합니다. **비공식 — 내부 구조는 버전업 시 바뀔 수 있습니다.**
+
+```js
+init({ links: ["https://qr.kakaopay.com/your-code"] });
+document.querySelector("[data-vibetip-widget]").shadowRoot; /* 직접 조작 */
+```
 
 ## 이미지로 내보내기
 
