@@ -21,6 +21,10 @@ test('--vt-radius 토큰을 정의하고 패널에 사용한다', () => {
   expect(CSS).not.toMatch(/\.vt-panel\{[^}]*border-radius:28px/)
 })
 
-test('QR 배경을 토큰(fallback #fff)으로 둔다', () => {
-  expect(CSS).toContain('var(--vt-qr-bg,#fff)')
+test('QR 배경은 스캔 대비를 위해 #fff 고정이다 (토큰 아님)', () => {
+  // A custom property here would leak ambient page CSS in (all:initial does not
+  // reset custom properties), and the QR SVG paints white anyway — so it is a
+  // hardcoded literal, not a token.
+  expect(CSS).not.toContain('--vt-qr-bg')
+  expect(CSS).toMatch(/\.vt-qr-code\{[^}]*background:#fff/)
 })

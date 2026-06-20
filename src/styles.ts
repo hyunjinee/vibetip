@@ -37,7 +37,7 @@ export const CSS = `
 .vt-qr-view{display:flex;flex-direction:column;align-items:center;padding:0 8px 8px;text-align:center}
 .vt-qr-back{align-self:flex-start;margin:0 0 10px;padding:7px 9px;border:0;border-radius:10px;background:transparent;color:var(--vt-text-2);font:inherit;font-size:12px;font-weight:650;cursor:pointer;transition:background .15s ease,color .15s ease}
 .vt-qr-back:hover{background:var(--vt-card);color:var(--vt-text)}
-.vt-qr-code{display:grid;place-items:center;width:224px;height:224px;padding:8px;border:1px solid var(--vt-line);border-radius:22px;background:var(--vt-qr-bg,#fff);box-shadow:0 8px 24px #191F2812}
+.vt-qr-code{display:grid;place-items:center;width:224px;height:224px;padding:8px;border:1px solid var(--vt-line);border-radius:22px;background:#fff;box-shadow:0 8px 24px #191F2812}
 .vt-qr-code svg{display:block;width:208px;height:208px;border-radius:12px}
 .vt-qr-title{margin-top:16px;font-size:17px;font-weight:750;letter-spacing:-.025em;line-height:1.35}
 .vt-qr-hint{max-width:270px;margin-top:6px;color:var(--vt-text-2);font-size:12.5px;line-height:1.55}
