@@ -2,9 +2,9 @@ import { correction, generate } from 'lean-qr'
 import { toSvg } from 'lean-qr/extras/svg'
 import { resolveLink } from './presets'
 import { CSS } from './styles'
+import { filterTokenEntries } from './tokens'
 import type { VibeTipInstance, VibeTipOptions } from './types'
 
-const DEFAULT_ACCENT = '#FFDD00'
 const REPO_URL = 'https://github.com/hyunjinee/vibetip'
 
 const ICON_ARROW =
@@ -63,7 +63,14 @@ export function createWidget(options: VibeTipOptions): VibeTipInstance {
   const root = el('div', 'vt-root')
   root.setAttribute('data-pos', options.position ?? 'bottom-right')
   root.setAttribute('data-mode', inline ? 'inline' : 'floating')
-  root.style.setProperty('--vt-accent', options.accent ?? DEFAULT_ACCENT)
+  // Accent + token overrides go on the host element (not .vt-root) so they win
+  // over the :host token defaults and over both themes, while ambient page CSS
+  // stays isolated. Only set accent when given, so the CSS default / a CSS
+  // override survives when it isn't.
+  if (options.accent) host.style.setProperty('--vt-accent', options.accent)
+  for (const [key, value] of filterTokenEntries(options.tokens)) {
+    host.style.setProperty(key, value)
+  }
   shadow.appendChild(root)
 
   // Theme: explicit value wins; 'auto' tracks the OS scheme live
@@ -71,19 +78,21 @@ export function createWidget(options: VibeTipOptions): VibeTipInstance {
   const applyTheme = () => {
     const theme = options.theme ?? 'auto'
     const resolved = theme === 'auto' ? (media.matches ? 'dark' : 'light') : theme
-    root.setAttribute('data-theme', resolved)
+    host.setAttribute('data-theme', resolved)
   }
   applyTheme()
   media.addEventListener('change', applyTheme)
 
   // Panel
   const panel = el('div', 'vt-panel')
+  panel.setAttribute('part', 'panel')
   panel.setAttribute('role', inline ? 'region' : 'dialog')
   panel.setAttribute('aria-label', options.name ?? 'Support')
 
   let closeBtn: HTMLButtonElement | null = null
   if (!inline) {
     closeBtn = el('button', 'vt-close', '✕')
+    closeBtn.setAttribute('part', 'close')
     closeBtn.setAttribute('aria-label', 'Close')
     panel.appendChild(closeBtn)
   }
@@ -156,6 +165,7 @@ export function createWidget(options: VibeTipOptions): VibeTipInstance {
     }
 
     paymentControl.dataset.type = link.type
+    paymentControl.setAttribute('part', 'link')
     const paymentIcon = el('span', 'vt-link-emoji')
     if (link.icon) paymentIcon.textContent = link.icon
     else paymentIcon.innerHTML = ICON_KAKAOPAY
@@ -185,6 +195,7 @@ export function createWidget(options: VibeTipOptions): VibeTipInstance {
   let fab: HTMLButtonElement | null = null
   if (!inline) {
     fab = el('button', 'vt-fab')
+    fab.setAttribute('part', 'fab')
     fab.setAttribute('aria-haspopup', 'dialog')
     const buttonLabel = options.buttonLabel ?? 'Tip'
     if (buttonLabel) {
