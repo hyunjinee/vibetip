@@ -134,11 +134,12 @@ init({
 빌드 없이도 됩니다. 위젯 호스트 선택자는 `[data-vibetip-widget]`:
 
 ```css
+/* 외부 문서 규칙은 명시도와 무관하게 :host 기본값을 이깁니다(라이트·다크 모두 적용) */
 [data-vibetip-widget] {
   --vt-bg: #0b0b0c;
   --vt-radius: 14px;
 }
-/* 다크 값만 따로 바꾸려면 테마 선택자로 명시도를 맞추세요 */
+/* 다크에서만 다른 값을 쓰려면 테마로 범위를 좁히세요 */
 [data-vibetip-widget][data-theme="dark"] {
   --vt-bg: #000;
 }
