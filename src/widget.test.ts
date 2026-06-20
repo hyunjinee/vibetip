@@ -27,6 +27,26 @@ test('shadowRoot에 part 속성 4개를 노출한다 (floating)', () => {
   inst.destroy()
 })
 
+test('모바일에서는 링크가 a[part="link"]로 렌더된다', () => {
+  // Desktop renders a <button> (QR popover); mobile renders an <a> to KakaoPay.
+  // happy-dom's default UA is desktop, so force a mobile UA for this branch.
+  const ua = navigator.userAgent
+  Object.defineProperty(navigator, 'userAgent', {
+    value: 'Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X)',
+    configurable: true,
+  })
+  try {
+    const inst = createWidget({ links: [URL] })
+    const link = host().shadowRoot?.querySelector('[part="link"]')
+    expect(link?.tagName).toBe('A')
+    expect(link?.getAttribute('target')).toBe('_blank')
+    expect(link?.getAttribute('rel')).toContain('noopener')
+    inst.destroy()
+  } finally {
+    Object.defineProperty(navigator, 'userAgent', { value: ua, configurable: true })
+  }
+})
+
 test('theme=dark면 host에 data-theme=dark', () => {
   const inst = createWidget({ links: [URL], theme: 'dark' })
   expect(host().getAttribute('data-theme')).toBe('dark')
