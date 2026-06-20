@@ -45,6 +45,7 @@ if (script && linksAttr) {
       theme: script.dataset.theme as VibeTipOptions['theme'],
       buttonLabel: script.dataset.buttonLabel,
       hideBranding: script.dataset.hideBranding != null,
+      tokens: script.dataset.tokens ? JSON.parse(script.dataset.tokens) : undefined,
     })
   } catch (err) {
     console.error('[vibetip] failed to auto-initialize:', err)

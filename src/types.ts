@@ -33,6 +33,13 @@ export interface VibeTipOptions {
   buttonLabel?: string
   /** Hide the "Powered by VibeTip" footer line */
   hideBranding?: boolean
+  /**
+   * Override design tokens (CSS custom properties), e.g.
+   * `{ '--vt-bg': '#111', '--vt-radius': '12px' }`. Keys must start with `--`;
+   * others are ignored. Applied inline on the host element, so they win over
+   * both themes (theme-agnostic). See the README for the public token list.
+   */
+  tokens?: Record<string, string>
 }
 
 export interface VibeTipInstance {
