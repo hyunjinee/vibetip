@@ -12,6 +12,7 @@
  * data-links accepts KakaoPay transfer URLs as a comma-separated list or JSON array.
  */
 import { init } from './index'
+import { parseTokens } from './tokens'
 import type { TipLink, VibeTipOptions } from './types'
 
 // Expose a global so script-tag users can also call VibeTip.init() manually
@@ -45,7 +46,7 @@ if (script && linksAttr) {
       theme: script.dataset.theme as VibeTipOptions['theme'],
       buttonLabel: script.dataset.buttonLabel,
       hideBranding: script.dataset.hideBranding != null,
-      tokens: script.dataset.tokens ? JSON.parse(script.dataset.tokens) : undefined,
+      tokens: parseTokens(script.dataset.tokens),
     })
   } catch (err) {
     console.error('[vibetip] failed to auto-initialize:', err)
