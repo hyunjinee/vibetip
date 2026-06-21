@@ -16,7 +16,7 @@ export const CSS = `
 [data-pos=bottom-right] .vt-panel{right:24px;transform-origin:calc(100% - 48px) calc(100% + 42px)}
 [data-pos=bottom-left] .vt-panel{left:24px;transform-origin:48px calc(100% + 42px)}
 .vt-open .vt-panel{visibility:visible;opacity:1;transform:none;transition-delay:0s}
-.vt-close{position:absolute;top:18px;right:18px;width:32px;height:32px;display:flex;align-items:center;justify-content:center;border:0;border-radius:50%;background:var(--vt-card);color:var(--vt-text-3);font:inherit;font-size:13px;line-height:1;cursor:pointer;box-shadow:0 0 0 1px var(--vt-line);transition:background .15s ease,color .15s ease,transform .2s var(--vt-pop)}
+.vt-close{position:absolute;z-index:1;top:18px;right:18px;width:32px;height:32px;display:flex;align-items:center;justify-content:center;border:0;border-radius:50%;background:var(--vt-card);color:var(--vt-text-3);font:inherit;font-size:13px;line-height:1;cursor:pointer;box-shadow:0 0 0 1px var(--vt-line);transition:background .15s ease,color .15s ease,transform .2s var(--vt-pop)}
 .vt-close:hover{background:var(--vt-card-hover);color:var(--vt-text)}
 .vt-close:active{transform:scale(.88)}
 .vt-header{position:relative;display:flex;align-items:flex-start;min-height:68px;padding:8px 42px 14px 8px}

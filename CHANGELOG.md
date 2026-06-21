@@ -1,5 +1,11 @@
 # vibetip
 
+## 0.5.1
+
+### Patch Changes
+
+- 플로팅 패널의 닫기(X) 버튼이 `position:relative`인 헤더에 가려 실제 클릭이 가로채지던 문제를 수정했습니다(`.vt-close`에 `z-index` 부여). 또한 데스크톱 카카오페이 버튼의 QR 아이콘이 격자와 어긋나 깨져 보이던 부분을 정렬된 모듈로 다듬었습니다.
+
 ## 0.5.0
 
 ### Minor Changes
