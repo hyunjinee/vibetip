@@ -1,26 +1,20 @@
 'use client'
 
-import { useEffect, useRef } from 'react'
-import { init, type VibeTipInstance } from 'vibetip'
+import { useVibeTip } from 'vibetip/react'
 
 const KAKAO_PAY_URL = 'https://qr.kakaopay.com/Ej8TSKM4J' // ← 본인 카카오페이 송금코드 URL로 바꾸세요
 
-// 서버 컴포넌트에서는 DOM이 없으므로 'use client' + useEffect 안에서만 init합니다.
-// 가운데 "패널 열기" 버튼도 이 클라이언트 컴포넌트가 렌더해 위젯 인스턴스와 연결합니다.
+// useVibeTip이 마운트/언마운트 라이프사이클을 처리합니다('use client'만 있으면 됨).
+// 가운데 "패널 열기" 버튼은 훅이 돌려준 핸들로 위젯을 엽니다.
 export default function VibeTip() {
-  const tip = useRef<VibeTipInstance | null>(null)
-
-  useEffect(() => {
-    tip.current = init({
-      name: 'VibeTip',
-      message: '모바일에서는 바로 송금하고, PC에서는 화면의 QR을 스캔해 주세요.',
-      links: [KAKAO_PAY_URL],
-      accent: '#FFDD00',
-      position: 'bottom-right',
-      theme: 'auto',
-    })
-    return () => tip.current?.destroy()
-  }, [])
+  const tip = useVibeTip({
+    name: 'VibeTip',
+    message: '모바일에서는 바로 송금하고, PC에서는 화면의 QR을 스캔해 주세요.',
+    links: [KAKAO_PAY_URL],
+    accent: '#FFDD00',
+    position: 'bottom-right',
+    theme: 'auto',
+  })
 
   return (
     <div className="cta-wrap">
@@ -28,7 +22,7 @@ export default function VibeTip() {
         className="open-panel"
         onClick={(event) => {
           event.stopPropagation()
-          tip.current?.open()
+          tip.open()
         }}
       >
         <svg className="kakaopay-mark" viewBox="0 0 34 34" aria-hidden="true">

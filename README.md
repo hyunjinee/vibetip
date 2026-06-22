@@ -53,7 +53,43 @@ const tip = init({
 // tip.open() / tip.close() / tip.destroy()
 ```
 
-React/Next.js 사용법은 [examples/](./examples)를 보세요.
+### React / Next.js
+
+`vibetip/react` 서브패스로 컴포넌트와 훅을 제공합니다. `react`는 **optional peerDependency**라 스크립트 태그·바닐라 유저는 아무 영향이 없습니다(설치도, 경고도 없음).
+
+```tsx
+"use client"; // Next.js App Router에서 필요
+import { VibeTip } from "vibetip/react";
+
+export default function Page() {
+  return (
+    <VibeTip
+      name="홍길동"
+      message="이 앱이 도움이 됐다면 커피 한 잔!"
+      links={["https://qr.kakaopay.com/your-code"]}
+      tokens={{ "--vt-radius": "12px" }}
+    />
+  );
+}
+```
+
+props는 `init()` 옵션과 동일합니다. 컴포넌트는 아무것도 렌더하지 않고(위젯이 스스로 `document.body`에 마운트), `ref`로 `open()`/`close()`를 호출할 수 있습니다.
+
+기본 버튼과 별개로 **내 UI에서** 패널을 열고 싶다면 `useVibeTip` 훅:
+
+```tsx
+"use client";
+import { useVibeTip } from "vibetip/react";
+
+export function TipButton() {
+  const tip = useVibeTip({ links: ["https://qr.kakaopay.com/your-code"] });
+  return <button onClick={tip.open}>후원하기</button>;
+}
+```
+
+> prop이 직렬화 기준으로 바뀌면 위젯을 재생성합니다. 매 렌더 새 옵션 객체를 넘겨도 값이 같으면 재생성하지 않지만, 옵션이 자주 바뀐다면 `useMemo`로 안정화하세요.
+
+전체 예제는 [examples/](./examples)를 보세요.
 
 ## 카카오페이 송금코드 준비
 
