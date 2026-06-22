@@ -24,7 +24,12 @@
     ".": {
       "types": "./dist/index.d.ts",
       "import": "./dist/vibetip.js"
-    }
+    },
+    "./react": {
+      "types": "./dist/react.d.ts",
+      "import": "./dist/react.js"
+    },
+    "./package.json": "./package.json"
   },
   "files": [
     "dist",
@@ -46,6 +51,14 @@
     "widget",
     "vibe-coding"
   ],
+  "peerDependencies": {
+    "react": ">=16.8.0"
+  },
+  "peerDependenciesMeta": {
+    "react": {
+      "optional": true
+    }
+  },
   "devDependencies": {
     "@changesets/changelog-github": "^0.7.0",
     "@changesets/cli": "^2.31.0",

@@ -39,7 +39,23 @@ async function build() {
     sourcemap: 'linked',
   })
 
-  for (const result of [esm, iife, cli]) {
+  // React wrapper bundle (vibetip/react). React stays external — never bundled —
+  // so the core keeps zero runtime dependencies and React users reuse their copy.
+  const react = await Bun.build({
+    entrypoints: ['src/react.ts'],
+    outdir: 'dist',
+    naming: 'react.js',
+    format: 'esm',
+    external: ['react', 'react-dom', 'react/jsx-runtime'],
+    minify: true,
+    sourcemap: 'linked',
+    // Minification strips the source's top-of-file directive, so re-inject it as
+    // a banner — the built module must start with "use client" to be a Client
+    // Component under Next.js App Router / RSC. Guarded below.
+    banner: '"use client";',
+  })
+
+  for (const result of [esm, iife, cli, react]) {
     if (!result.success) {
       for (const log of result.logs) console.error(log)
       throw new AggregateError(result.logs, 'bun build failed')
@@ -61,6 +77,16 @@ async function build() {
     }
   }
 
+  // The React wrapper must keep its 'use client' directive at the very top so it
+  // works as a Client Component under Next.js App Router / RSC; minifiers can
+  // strip or relocate top-of-file directives, so fail loudly if it's gone.
+  const reactCode = await Bun.file('dist/react.js').text()
+  if (!reactCode.startsWith('"use client"') && !reactCode.startsWith("'use client'")) {
+    throw new Error(
+      `[build] dist/react.js is missing the leading "use client" directive (starts with: ${reactCode.slice(0, 40)}).`,
+    )
+  }
+
   // dist/cli.js is the `vibetip` bin: ensure a shebang and the executable bit.
   const cliPath = 'dist/cli.js'
   const cliCode = readFileSync(cliPath, 'utf8')
@@ -69,7 +95,7 @@ async function build() {
   }
   chmodSync(cliPath, 0o755)
 
-  console.log('built dist/vibetip.js + dist/vibetip.iife.js + dist/cli.js')
+  console.log('built dist/vibetip.js + dist/vibetip.iife.js + dist/cli.js + dist/react.js')
 }
 
 await build()
