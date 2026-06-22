@@ -1,9 +1,9 @@
 import { correction, generate } from 'lean-qr'
 import { toSvg } from 'lean-qr/extras/svg'
-import { resolveLink } from './presets'
-import { CSS } from './styles'
-import { filterTokenEntries } from './tokens'
-import type { VibeTipInstance, VibeTipOptions } from './types'
+import { resolveLink } from './presets.js'
+import { CSS } from './styles.js'
+import { filterTokenEntries } from './tokens.js'
+import type { VibeTipInstance, VibeTipOptions } from './types.js'
 
 const REPO_URL = 'https://github.com/hyunjinee/vibetip'
 

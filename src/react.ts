@@ -1,8 +1,8 @@
 'use client'
 
 import { forwardRef, useEffect, useImperativeHandle, useRef } from 'react'
-import { init } from './index'
-import type { VibeTipInstance, VibeTipOptions } from './types'
+import { init } from './index.js'
+import type { VibeTipInstance, VibeTipOptions } from './types.js'
 
 export type VibeTipProps = VibeTipOptions
 export type VibeTipHandle = Pick<VibeTipInstance, 'open' | 'close'>

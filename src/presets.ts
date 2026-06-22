@@ -1,4 +1,4 @@
-import type { LinkType, TipLink } from './types'
+import type { LinkType, TipLink } from './types.js'
 
 const KAKAOPAY_HOSTS = new Set(['qr.kakaopay.com', 'link.kakaopay.com'])
 

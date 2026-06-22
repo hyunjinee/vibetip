@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 import { writeFileSync } from 'node:fs'
 import { extname } from 'node:path'
-import { renderCardSvg } from './card'
-import { parseArgs } from './cli-args'
+import { renderCardSvg } from './card.js'
+import { parseArgs } from './cli-args.js'
 
 const USAGE = `vibetip image — 카카오페이 후원 카드 이미지 생성
 

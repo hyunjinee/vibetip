@@ -11,9 +11,9 @@
  *
  * data-links accepts KakaoPay transfer URLs as a comma-separated list or JSON array.
  */
-import { init } from './index'
-import { parseTokens } from './tokens'
-import type { TipLink, VibeTipOptions } from './types'
+import { init } from './index.js'
+import { parseTokens } from './tokens.js'
+import type { TipLink, VibeTipOptions } from './types.js'
 
 // Expose a global so script-tag users can also call VibeTip.init() manually
 // (e.g. inline mount). Assigned explicitly so the IIFE works with any bundler,

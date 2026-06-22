@@ -1,7 +1,7 @@
-import { createWidget } from './widget'
-import type { VibeTipInstance, VibeTipOptions } from './types'
+import { createWidget } from './widget.js'
+import type { VibeTipInstance, VibeTipOptions } from './types.js'
 
-export type { VibeTipOptions, VibeTipInstance, TipLink, LinkType } from './types'
+export type { VibeTipOptions, VibeTipInstance, TipLink, LinkType } from './types.js'
 
 /** Mount the VibeTip floating button. Call once after the DOM is ready. */
 export function init(options: VibeTipOptions): VibeTipInstance {
