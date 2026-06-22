@@ -10,7 +10,7 @@
     "next": "^15.0.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "vibetip": "^0.5.1"
+    "vibetip": "^0.6.0"
   },
   "devDependencies": {
     "@types/node": "^20.0.0",

@@ -1,6 +1,6 @@
 {
   "name": "vibetip",
-  "version": "0.5.1",
+  "version": "0.6.0",
   "description": "Drop-in KakaoPay tip button for vibe-coded apps. One script tag, zero backend.",
   "license": "MIT",
   "author": "hyunjinee",
