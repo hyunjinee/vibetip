@@ -7,10 +7,13 @@ import type { VibeTipInstance, VibeTipOptions } from './types.js'
 export type VibeTipProps = VibeTipOptions
 export type VibeTipHandle = Pick<VibeTipInstance, 'open' | 'close'>
 
-// `mount` may be an HTMLElement (not serializable) so it is excluded from the key.
-// Everything else (links, tokens, …) is serializable. The widget re-initializes
-// only when this key changes — not on every parent render that passes a fresh
-// options object/array. That equality guard is the #1 bug these wrappers hit.
+// `mount` is excluded from the key: an HTMLElement isn't serializable, and a
+// string selector is intentionally treated the same. Consequence: `mount` is
+// read once at first init and is NOT reactive — changing it later does not move
+// the widget (remount via a React `key` if you need a different target).
+// Everything else (links, tokens, …) is serialized, so the widget re-initializes
+// only on a material change — not on every parent render that passes a fresh
+// options object/array (the #1 bug these wrappers hit).
 function optionsKey(options: VibeTipOptions): string {
   const { mount, ...rest } = options
   return JSON.stringify(rest)

@@ -58,7 +58,6 @@ const tip = init({
 `vibetip/react` 서브패스로 컴포넌트와 훅을 제공합니다. `react`는 **optional peerDependency**라 스크립트 태그·바닐라 유저는 아무 영향이 없습니다(설치도, 경고도 없음).
 
 ```tsx
-"use client"; // Next.js App Router에서 필요
 import { VibeTip } from "vibetip/react";
 
 export default function Page() {
@@ -72,6 +71,8 @@ export default function Page() {
   );
 }
 ```
+
+`<VibeTip>`은 이미 `'use client'` 모듈이라 **서버 컴포넌트에서 바로 import**해도 됩니다 — 위 예제엔 `'use client'`가 필요 없습니다. 같은 파일에서 `useVibeTip` 훅이나 `onClick` 등 클라이언트 기능을 함께 쓸 때만 파일 맨 위에 `'use client'`를 추가하세요.
 
 props는 `init()` 옵션과 동일합니다. 컴포넌트는 아무것도 렌더하지 않고(위젯이 스스로 `document.body`에 마운트), `ref`로 `open()`/`close()`를 호출할 수 있습니다.
 
@@ -87,7 +88,7 @@ export function TipButton() {
 }
 ```
 
-> prop이 직렬화 기준으로 바뀌면 위젯을 재생성합니다. 매 렌더 새 옵션 객체를 넘겨도 값이 같으면 재생성하지 않지만, 옵션이 자주 바뀐다면 `useMemo`로 안정화하세요.
+> prop이 직렬화 기준으로 바뀌면 위젯을 재생성합니다. 매 렌더 새 옵션 객체를 넘겨도 값이 같으면 재생성하지 않지만, 옵션이 자주 바뀐다면 `useMemo`로 안정화하세요. `mount`은 첫 렌더에 한 번만 읽습니다(비반응성) — 대상을 바꾸려면 React `key`로 리마운트하세요.
 
 전체 예제는 [examples/](./examples)를 보세요.
 
